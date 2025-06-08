@@ -12,3 +12,12 @@ app.listen(port, (error) => {
     }
     console.log(`Application running at: http://localhost:${port}/`)
 })
+
+const sequelize = require('./config/database');
+
+// Sincronizar os modelos com o banco de dados
+sequelize.sync({ force: true }) // Força a recriação das tabelas. Apenas em desenvolvimento.
+  .then(() => {
+    console.log('Database & tables created!');
+  })
+  .catch(err => console.error('Unable to connect to the database:', err));
