@@ -1,92 +1,110 @@
-
 # Guide to Set Up the UFC Ask Project
 
 ## 📑 Overview
 
-**UFC Ask** is a web-based chatbot application developed with **Node.js**, **Express**, and **MySQL**. It integrates a **Python RAG (Retrieval-Augmented Generation) API** to provide AI-generated responses to questions related to the academic environment of the **University Federal do Ceará (UFC)**.
+**UFC Ask** is a web-based chatbot application developed with **Node.js**, **Express**, and **MySQL**. It integrates a **Python RAG (Retrieval-Augmented Generation) API** to provide AI-generated responses to questions related to the academic environment of the **Universidade Federal do Ceará (UFC)**.
 
 ## 🔗 Important Links
 
 - **Figma Prototype:** [View Prototype](https://www.figma.com/design/JR1sGGT0yuR0od9Qoc4ijf/UFC-ASK?node-id=29-19&t=Z1lHqHjalADbkhk8-1)
 - **RAG API:** [GitHub Repository for RAG API](https://github.com/PipInstallGustavo/UFC-ASK)
 
-## 🛠️ Environment Setup
+---
 
-### **1. Install Node.js**
+## ⚙️ Setup Instructions
 
-Make sure you have **[Node.js](https://nodejs.org/pt)** installed on your machine. You can download the latest version for your operating system.
+### ✅ Step-by-Step
+
+1. **Clone the project:**
+   ```bash
+   git clone https://github.com/Werbster-MT/chat-bot-ufc-ask.git
+   cd chat-bot-ufc-ask
+   ```
+
+2. **Switch to the development branch:**
+   ```bash
+   git checkout development
+   ```
+
+3. **Create your own feature branch:**
+   ```bash
+   git checkout -b [your-feature-name]
+   ```
+
+4. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+5. **Create the database manually:**
+
+   ```sql
+   CREATE DATABASE ufc_ask;
+   ```
+
+6. **Run migrations:**
+   ```bash
+   npx sequelize-cli db:migrate
+   ```
+
+7. **Seed an admin user (email: admin@ufc.br | senha: admin123):**
+   ```bash
+   npx sequelize-cli db:seed:all
+   ```
+
+8. **Start the server:**
+   ```bash
+   npm run dev
+   ```
+
+9. **Visit:**
+   ```
+   http://localhost:3000
+   ```
 
 ---
 
-## ⚙️ Setup
+## 🔐 Authentication & Authorization
 
-### **1. Clone the Project Repository**
+- Login credentials are verified using `bcrypt` and a **JWT** is generated on success.
+- The token is stored in the session and used to authenticate future requests to the **API RAG**.
+- Role-based access control is enforced using the `role` claim in the token (`admin` or `student`).
+- Middleware can be applied to protect routes accordingly.
 
-Clone the project to your local machine:
+Example of token usage when calling the RAG API:
 
-```bash
-git clone https://github.com/Werbster-MT/chat-bot-ufc-ask.git
-```
-
-### **2. Switch to the Development Branch**
-
-Once you have cloned the repository, switch to the `development` branch to work on the latest development version:
-
-```bash
-git checkout development
-```
-
-### **3. Create a New Branch for Your Feature**
-
-To ensure good project organization, create a new branch from `development` for your specific feature or bug fix. More about branching can be found in the [branching guidelines](branching_guideline.md).
-
-```bash
-git checkout -b [your-branch-name]
-```
-
-### **4. Install Dependencies**
-
-If this is your first time working with the project, you will need to install the project dependencies. Run the following command in your terminal:
-
-```bash
-npm install
-```
-
-### **5. Run the Application**
-
-To run the application with automatic reloading, use `nodemon`. This will watch for file changes and restart the server:
-
-```bash
-nodemon index.js
-```
-
-If you prefer to run the application without automatic reloading, simply use:
-
-```bash
-node index.js
+```js
+const response = await axios.post('http://rag-api/ask', {
+  question: 'Como fazer matrícula?'
+}, {
+  headers: {
+    Authorization: `Bearer ${req.session.token}`
+  }
+});
 ```
 
 ---
 
 ## 🧑‍💻 Development Guidelines
 
-- Please follow the [branching guidelines](branching_guideline.md) when contributing to the project.
-- Write clean and readable code, following **JavaScript/Node.js** best practices.
-- For backend development, ensure proper error handling and validation for API endpoints.
+- Follow the [branching guidelines](branching_guideline.md)
+- Write clean, modular code
+- Use `try/catch` around all async operations
+- Do not commit secrets or `.env` files
 
 ---
 
-## 🔧 Technologies Used
+## 📁 Technologies
 
-- **Node.js:** Server-side JavaScript runtime environment.
-- **Express.js:** Web application framework for Node.js.
-- **MySQL:** Relational database management system.
-- **Python (FastAPI):** Python-based framework for the RAG (Retrieval-Augmented Generation) API.
-- **Nodemon:** Tool to automatically restart the server during development.
-- **Git:** Version control.
+- **Node.js**, **Express.js**
+- **Sequelize** ORM + **MySQL**
+- **JWT** for auth
+- **FastAPI** (Python) for external RAG API
+- **EJS** for views
+- **Nodemon**, **bcrypt**
 
 ---
 
-### 📋 License
+## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
