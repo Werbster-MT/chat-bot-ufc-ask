@@ -19,6 +19,7 @@ Each branch should follow the following naming structure:
   - `arch`: Architecture implementation.
   - `chore`: Maintenance tasks and technical adjustments (e.g., dependency updates).
   - `docs`: Documentation.
+  - `test`: Add tests.
 
 - **`<action>`**: A brief description of what was done. Examples:
   - `add-login-page` for adding a login page.
@@ -33,8 +34,9 @@ Each branch should follow the following naming structure:
 | `feat` | add-login-page      | `feat/add-login-page`          |
 | `bug`  | fix-login-error     | `bug/fix-login-error`          |
 | `arch` | add-mvc-arch        | `arch/add-mvc-arch`            |
-| `docs` | update-readme       | `docs/tpc03/docs/update-readme`|
-| `chore`| update-dependencies | `chore/tpc02/chore/update-dependencies`|
+| `docs` | update-readme       | `docs/update-readme`|
+| `chore`| update-dependencies | `chore/update-dependencies`|
+| `test`| test-login-page | `test/test-login-page`|
 
 ---
 
