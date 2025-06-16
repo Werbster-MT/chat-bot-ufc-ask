@@ -1,0 +1,89 @@
+/* Project Palette */
+:root {
+  --color-background: #222;
+  --color-foreground: #e5e5e5;
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-box-bg: radial-gradient(circle at bottom right, rgba(9, 126, 77, 0.1), #000 80%);
+  --color-input-bg: #1e1e1e;
+  --color-input-border: #444;
+  --color-input-placeholder: #888;
+  --color-white: #ffffff;
+  --color-link: #aaa;
+  --color-link-hover: #fff;
+
+  --color-primary: #087C4B;
+  --color-primary-hover: #0bbf6a;
+
+  --gradient-title: linear-gradient(90deg, var(--color-primary) 0%, var(--color-background) 100%);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: var(--color-foreground);
+  position: relative;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.title-gradient {
+  display: inline-block;
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 1.92px;
+  padding: 12px 28px;
+  border-radius: 6px;
+  background: var(--gradient-title);
+  color: var(--color-white);
+}
+
+.login-box {
+  background: var(--color-box-bg);
+  padding: 40px;
+  border-radius: 16px;
+  width: 483px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+.login-box .form-control {
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  color: var(--color-white);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.login-box .form-control::placeholder {
+  color: var(--color-input-placeholder);
+}
+
+.login-box .btn {
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 200px;
+  margin: 0 auto;
+  display: block;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-box .btn:hover {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.02);
+}
+
+.login-box .small a {
+  font-size: 13px;
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.login-box .small a:hover {
+  color: var(--color-link-hover);
+}
