@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login</title>
+    <title>Primeiro Acesso</title>
 
     <!-- Bootstrap 5 -->
     <link
@@ -27,37 +27,49 @@
 
       <div class="login-box mx-auto">
         <% if (error) { %>
-          <div class="alert alert-danger mt-2">
-            <%= error %>
-          </div>
+        <div class="alert alert-danger mt-2"><%= error %></div>
         <% } %>
 
-        <form method="POST" action="/" class="d-grid gap-3">
+        <form
+          method="POST"
+          action="/send-code"
+          class="d-grid gap-3"
+          onsubmit="return validar();"
+        >
+          <!-- Campo oculto para passar o tipo de ação -->
+          <input type="hidden" name="type" value="<%= type %>" />
+
+          <label for="email">Digite o seu email acadêmico da UFC</label>
           <input
             type="email"
             name="email"
+            id="email"
             class="form-control"
             placeholder="Email Acadêmico"
             required
           />
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            placeholder="Senha"
-            required
-          />
-          <button type="submit" class="btn text-white fw-bold">
-            Entrar
-          </button>
-        </form>
 
-        <div class="mt-4 small">
-          <a href="/manage-access?type=password">Esqueci minha senha</a>
-          <br />
-          <a href="/manage-access?type=access">Primeiro acesso</a>
-        </div>
+          <button type="submit" class="btn text-white fw-bold">Próximo</button>
+        </form>
       </div>
     </main>
   </body>
 </html>
+
+<script>
+  function validar() {
+    let email = window.document.getElementById("email").value;
+    var ok = true;
+
+    // Verificar se o email contém '@alu.ufc.br'
+    const regex = /^[a-zA-Z0-9._%+-]+@alu\.ufc\.br$/;
+
+    if (!regex.test(email)) {
+      alert("Por favor, insira um email válido com @alu.ufc.br");
+      ok = false;
+    }
+
+    // Se passar na validação, retornar true
+    return ok;
+  }
+</script>

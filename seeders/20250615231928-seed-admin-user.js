@@ -4,7 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('users', [{
       email: 'admin@ufc.br',
-      password: '$2b$10$eIMdcT4PuH/zOZd0XvPEHuYm6G/iy5X.RX9Fi/NVqD0eItLKzXBnG', // senha: admin123
+      password: '$2b$10$cJE98XVMSsEPmlheA7zyH.RID.CJjNgVqWNL.NvecL4YCF7HclA0O', // senha: admin123
       name: 'Administrador',
       role: 'admin',
       created_at: new Date(),
