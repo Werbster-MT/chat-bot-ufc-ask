@@ -1,7 +1,8 @@
 require("dotenv").config(); // Carregar as variáveis de ambiente
 
-const User = require("../models/LoginModel");
+const {User, userRoles} = require("../models/UserModel");
 const bcrypt = require("bcrypt");
+const { response } = require("express");
 const jwt = require("jsonwebtoken");
 
 const SECRET = process.env.JWT_SECRET;
@@ -50,7 +51,11 @@ class LoginController {
 
       console.log("Token JWT:", req.session.token);
 
-      res.redirect("/dashboard");
+      // Redirect to each HomePage according to the user
+      req.session.chatResponse = null;
+      let homePage = user.role == userRoles.ESTUDANTE ? "/studentHomePage" : "/dashboard";
+      res.redirect(homePage);
+
     } catch (error) {
       console.error("Erro na autenticação:", error);
       res.status(500).render("login", {

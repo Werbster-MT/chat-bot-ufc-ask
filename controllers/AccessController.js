@@ -1,6 +1,6 @@
 require("dotenv").config(); // Carregar as variáveis de ambiente
 
-const User = require("../models/LoginModel");
+const { User } = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto"); // para gerar o código
@@ -81,14 +81,16 @@ class AccessController {
 
   saveUser(req, res) {
     const { code, password01, password02 } = req.body;
-    const { email, code: storedCode } = req.session.userAccess || {};
+    const { email, code: storedCode, type } = req.session.userAccess || {};
+    const endpoint = type == 'password' ? '/update-password' : '/save-user';
+    const title = type == 'password' ? 'Redefinir Senha' : 'Cadastrar Conta';
 
     if (!email || code !== storedCode) {
-      return res.render("access_form", { error: "Código inválido ou expirado." });
+      return res.render("access_form", { error: "Código inválido ou expirado.",  endpoint: endpoint, title: title });
     }
 
     if (password01 !== password02) {
-      return res.render("access_form", { error: "Senhas não coincidem." });
+      return res.render("access_form", { error: "Senhas não coincidem.",  endpoint: endpoint, title: title });
     }
 
     // Criptografar a senha e salvar o usuário
@@ -99,7 +101,7 @@ class AccessController {
       name: email.split("@")[0],
     }).then(() => {
       delete req.session.userAccess;
-      return res.render("login", { error: "Conta criada com sucesso. Faça o login." }); // Redireciona para a página de login
+      return res.render("login", { error: "Conta criada com sucesso. Faça o login."}); // Redireciona para a página de login
     });
   }
 

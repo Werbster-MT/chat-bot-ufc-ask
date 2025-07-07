@@ -17,14 +17,19 @@
   --gradient-title: linear-gradient(90deg, var(--color-primary) 0%, var(--color-background) 100%);
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh; /* Permite crescer com conteúdo */
+}
+
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  height: 100vh;
   color: var(--color-foreground);
-  position: relative;
-  flex-shrink: 0;
+
   border: 1px solid var(--color-border);
   background: var(--color-background);
 
@@ -32,6 +37,7 @@ body {
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
+  background-color: #121212;
 }
 
 .cadastro {
@@ -179,16 +185,24 @@ body {
   white-space: nowrap;
 }
 
-.title-gradient {
-  display: inline-block;
+.wrap-title {
   font-size: 48px;
   font-weight: 600;
   letter-spacing: 1.92px;
   padding: 10px 16px 10px 6px;
+}
+
+.chat-desc {
+  color: var(--color-input-placeholder);
+}
+
+.title-gradient {
+  display: inline-block;
   background: linear-gradient(90deg,
       rgba(9, 127, 77, 0.5) 0%,
       rgba(9, 127, 77, 0) 100%);
   color: var(--color-white);
+  font-size: 48px;
 }
 
 .login-box {
@@ -238,32 +252,7 @@ body {
   color: var(--color-link-hover);
 }
 
-.user-title {
-  color: #E5E5E5;
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%;
-  /* 24px */
-}
-
-.email-title {
-  color: rgba(229, 229, 229, 0.40);
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 150%;
-  /* 21px */
-}
-
-.center-svg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* Estilo do container do usuário */
 .user-box {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.05);
@@ -276,13 +265,47 @@ body {
   box-sizing: border-box;
 }
 
-
-
+/* Estilo do círculo onde o ícone ficará */
 .circle {
-  width: 40px;
-  height: 40px;
-  background-color: #019A5A;
+  background-color: #019A5A;  /* Cor do círculo */
   border-radius: 50%;
+  width: 40px;  /* Largura do círculo */
+  height: 40px; /* Altura do círculo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Garante que o ícone se encaixe bem no círculo */
+}
+
+/* Estilo do ícone dentro do círculo */
+.circle i {
+  color: white; /* Cor do ícone dentro do círculo */
+  font-size: 20px; /* Ajuste o tamanho do ícone */
+}
+
+/* Estilo do nome do usuário */
+.user-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Estilo do email do usuário */
+.email-title {
+  font-size: 12px;
+  color: #B0B0B0;
+  font-weight: 400;
+}
+
+.new-chat {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.new-chat:hover {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.02);
 }
 
 .sidebar {
@@ -303,7 +326,7 @@ body {
   color: white;
 }
 
-.conteudo {
+.content {
   margin-left: 280px;
   /* espaço da sidebar */
   padding: 32px;
@@ -337,4 +360,88 @@ body {
 .theme-button img {
   width: 20px;
   height: 20px;
+}
+
+/* Chat Style */
+/* Estilo do contêiner do input e botão */
+.user-query {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  margin: 0 auto; /* Centraliza o contêiner */
+}
+
+/* Estilo do input */
+.user-query .form-control {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  color: var(--color-white);
+  border-radius: 8px 0 0 8px; /* Bordas arredondadas no lado esquerdo */
+  font-size: 14px;
+}
+
+.user-query .form-control::placeholder {
+  color: var(--color-input-placeholder)
+}
+
+/* Estilo do botão */
+.user-query button {
+  padding: 10px 24px;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 0 8px 8px 0; /* Bordas arredondadas no lado direito */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0; /* Garante que o botão não encolha */
+  display: inline-block; /* Garante que o botão tenha um comportamento de bloco */
+}
+
+/* Estilo do botão ao passar o mouse */
+.user-query button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* ChatBox */
+.content.main-chatbox {
+  min-height: 100vh;
+}
+
+.conversation-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.chat-label {
+  color: var(--color-input-placeholder);
+}
+
+.chat-bubble {
+  max-width: 70%;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1;
+  word-wrap: break-word;
+  background-color: #1e1e1e;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+}
+
+.user-message {
+  background-color: #019a5acc;
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 0;
+}
+
+.bot-response {
+  background-color: #2e2e2e;
+  color: white;
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
 }
