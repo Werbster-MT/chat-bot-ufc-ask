@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Inter Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Estilos customizados -->
+    <link rel="stylesheet" href="/assets/css/index.css" />
+    <!-- FontAwesome -->
+    <script
+      src="https://kit.fontawesome.com/0c23645969.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body class="d-flex justify-content-center align-items-center vh-100">
+    <!-- Incluindo a sidebar -->
+    <aside class="sidebar-container">
+      <%- include('components/sideBar.ejs') %>
+      <!-- Aqui está a inclusão da sidebar -->
+    </aside>
+
+    <main class="content">
+      <div class="text-center mb-5">
+        <h1 class="mb-2 wrap-title">
+          Bem Vindo ao <span class="title-gradient">UFC ASK</span>
+        </h1>
+        <p class="fst-italic chat-desc">
+          Seu assistente inteligente para tirar dúvidas sobre a UFC.<br />Pergunte
+          sobre editais, matrículas, calendário acadêmico e muito mais!
+        </p>
+      </div>
+
+      <div class="d-grid gap-3">
+        <div class="p-2"></div>
+        <div class="p-2"></div>
+      </div>
+
+      <!-- Formulário de Pergunta do Usuário -->
+      <form action="/chatBox" method="POST" class="text-center">
+        <div class="user-query d-flex flex-row justify-content-center">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Exemplo: 'Como faço para me matricular em uma disciplina?'"
+            id="userQuery"
+            name="userQuery"
+          />
+          <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

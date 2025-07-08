@@ -16,12 +16,12 @@
 <body>
 
     <% const color=typeof textColor !=='undefined' ? textColor : '#E5E5E5' ; %>
+    <% const btnId=typeof id !== 'undefined' ? id : ''; %>
 
-        <button class="theme-button" style="color: <%= color %>;">
+    <form method="<%= method %>" action="<%= action %>" class="mb-2" id="<%= btnId %>">
+        <button class="theme-button" style="color: <%= color %>;" >
             <img src="<%= iconPath %>" alt="ícone do botão">
             <%= buttonText %>
         </button>
-
+    </form>
 </body>
-
-</html>

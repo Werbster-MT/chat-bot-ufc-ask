@@ -6,14 +6,38 @@ const UfcApiController = {
     res.json(resposta);
   },
 
-  async ask(req, res) {
-    const { question } = req.body;
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!question || !token) {
-      return res.status(400).json({ sucesso: false, mensagem: 'Pergunta ou token ausente.' });
+  async ask(userQuery, token) {
+    
+    if (!userQuery) {
+      return { sucesso: false, mensagem: 'Pergunta não fornecida.' };
     }
-    const resposta = await ApiService.consumirApi('post', '/ask', { question }, token);
-    res.json(resposta);
+
+    if (!token) {
+      return { sucesso: false, mensagem: 'Token não fornecido.' };
+    }
+
+    const endpoint = '/ask'; // Definindo o endpoint
+    const method = 'POST';  // Método POST
+
+     // Montando o corpo da requisição
+    const body = {
+      question: userQuery
+    };
+
+    try {
+      // Chamada para a função consumirApi
+      const response = await ApiService.consumirApi(method, endpoint, body, token);
+
+      // Verifica se a resposta é válida
+      if (!response || response.sucesso === false) {
+        return { sucesso: false, mensagem: 'Erro ao obter resposta da API' };
+      }
+
+      return response;
+    } catch (error) {
+      console.error('Erro ao consumir a API:', error);
+      return { sucesso: false, mensagem: 'Erro na comunicação com a API.' };
+    }
   },
 
   async addUrls(req, res) {

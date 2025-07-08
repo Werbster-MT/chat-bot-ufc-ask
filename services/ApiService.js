@@ -9,7 +9,7 @@ async function consumirApi(method, endpoint, body = {}, token = '') {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      timeout: 5000
+      timeout: 60000
     };
 
     if (['post', 'put', 'patch', 'delete'].includes(method.toLowerCase())) {
@@ -22,14 +22,20 @@ async function consumirApi(method, endpoint, body = {}, token = '') {
     }
 
     const response = await axios(config);
-    return response.data;
+    
+    // Verifica se a resposta tem sucesso
+    if (response.status !== 200) {
+      console.error('Erro no status da resposta:', response.status);
+      return { sucesso: false, mensagem: `Erro ao acessar o serviço: ${response.status}` };
+    }
 
+    return response.data;
   } catch (error) {
     console.error('Erro ao consumir API UFC Ask:');
     console.error('Status:', error.response?.status || 'sem status');
     console.error('Dados:', error.response?.data || 'sem dados');
     console.error('Mensagem:', error.message);
-    throw error;
+    return { sucesso: false, mensagem: 'Erro na comunicação com a API.' };
   }
 }
 
