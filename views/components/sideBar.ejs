@@ -27,7 +27,7 @@
   <div class="mt-auto">
     <hr class="my-3 w-100" />
     <% if (userRole == 'estudante') { %>
-        <%- include('./sideBarButton', { iconPath: `/assets/imgs/delete.svg`, buttonText: 'Apagar Conversas',  method: 'post', action: 'deleteChats', id: 'del_chats' }) %>
+        <%- include('./sideBarButton', { iconPath: `/assets/imgs/delete.svg`, buttonText: 'Apagar Conversas',  method: 'post', action: '/deleteChats', id: 'del_chats' }) %>
     <% } %>
     <%- include('./sideBarButton', { iconPath: `/assets/imgs/tema.svg`, buttonText: 'Trocar para Modo Claro',  method: 'get', action: '#' }) %>
     <%- include('./sideBarButton', { iconPath: `/assets/imgs/novaGuia.svg`, buttonText: 'Updates & FAQ',  method: 'get', action: '#' }) %>

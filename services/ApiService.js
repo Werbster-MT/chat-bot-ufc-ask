@@ -9,7 +9,7 @@ async function consumirApi(method, endpoint, body = {}, token = '') {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      timeout: 30000
+      timeout: 60000
     };
 
     if (['post', 'put', 'patch', 'delete'].includes(method.toLowerCase())) {
