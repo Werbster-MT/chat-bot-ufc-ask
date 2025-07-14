@@ -19,7 +19,7 @@ class LoginController {
       const { email, password } = req.body;
       const user = await User.findOne({ where: { email } });
 
-      if (!user && user !== null) {
+      if (!user && user == null) {
         return res.render("login", { error: "Usuário não encontrado." });
       }
 

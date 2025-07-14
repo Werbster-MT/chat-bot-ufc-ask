@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Inter Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Estilos customizados -->
+    <link rel="stylesheet" href="/assets/css/index.css" />
+    <!-- FontAwesome -->
+    <script
+      src="https://kit.fontawesome.com/0c23645969.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <aside class="sidebar-container">
+      <%- include('components/sideBar.ejs') %>
+    </aside>
+
+    <main class="content p-4 min-vh-100">
+      <!-- Seção de Perfil -->
+      <h1 class="mb-4 text-start">Perfil</h1>
+      <div class="d-flex justify-content-center text-center mb-5">
+        <div class="perfil-box d-flex flex-column justify-content-center">
+          <div
+            class="perfil-title d-flex justify-content-center w-100 position-relative"
+          >
+            <p class="d-block mb-3"><strong><%= userName %></strong></p>
+            <div class="position-absolute top-0 end-0 p-0">
+              <button form="del-user" class="btn delete-account" title="Excluir Conta" type="submit"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+
+
+          <div class="perfil-icon mb-3">
+            <!-- Ícone de usuário, pode ser alterado futuramente -->
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="perfil-email">
+            <p><%= userEmail %></p>
+          </div>
+
+          <!-- Formulário para Renomear o Usuário -->
+          <form class="mb-2" action="/rename-user" method="POST">
+            <div
+              class="rename-user d-flex flex-column justify-content-center mb-2 w-100"
+            >
+              <label class="align-self-start" for="newUserName"
+                >Renomear Usuário</label
+              >
+              <div class="d-flex flex-row w-100">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Insira seu novo nome de usuário"
+                  id="newUserName"
+                  name="newUserName"
+                  required
+                />
+                <button type="submit">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Formulário para Excluir o Usuário -->
+          <form
+            action="/delete-user"
+            method="POST"
+            class="delete-user d-flex flex-column align-items-center"
+            id="del-user"
+          >
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("del-user");
+      if (form) {
+        form.addEventListener("submit", function (event) {
+          const res = confirm("Tem certeza que deseja excluir sua conta?");
+          if (!res) {
+            event.preventDefault();
+          }
+        });
+      }
+    });
+  </script>
+</html>
