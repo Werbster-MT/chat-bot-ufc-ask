@@ -22,7 +22,6 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh; /* Permite crescer com conteúdo */
 }
 
 body {
@@ -368,7 +367,7 @@ body {
   background-color: var(--color-primary-hover);
 }
 
-.delete-account {
+.delete-account, .delete-document {
   color: var(--color-white);  /* Deixa o ícone da lixeira vermelho */
   border: none;  
   background: none;  
@@ -377,9 +376,21 @@ body {
   padding: 0 !important;
 }
 
-.delete-account:hover {
+.delete-account:hover, .delete-document:hover {
   color: var(--color-danger-bg);
   transform: scale(1.1);  
+}
+
+/* Estilo do ícone de anexo */
+.attachment-icon {
+  color: var(--color-white);
+  transition: color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.attachment-icon:hover {
+  color: #28a745; /* Verde */
+  transform: scale(1.1);
 }
 
 /* Estilo do nome do usuário */
@@ -543,4 +554,137 @@ body {
   color: white;
   align-self: flex-start;
   border-bottom-left-radius: 0;
+}
+
+/* Estilo do formulário de upload */
+.form-upload {
+  background-color: var(--color-box-bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-upload label {
+  color: var(--color-white);
+}
+
+.form-upload .form-control {
+  background-color: #121212;
+  color: var(--color-input-placeholder);
+  border: 1px solid var(--color-input-border);
+  border-radius: 8px;
+}
+
+.form-upload button {
+  background-color: var(--color-primary);
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.form-upload button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+#documentLink::placeholder {
+  color: var(--color-input-placeholder);
+  text-overflow: ellipsis !important;
+}
+
+/* Custom file input */
+.custom-file-button input[type=file] {
+  margin-left: -2px !important;
+}
+
+.custom-file-button input[type=file]::-webkit-file-upload-button {
+  display: none;
+}
+
+.custom-file-button input[type=file]::file-selector-button {
+  display: none;
+}
+
+.custom-file-button:hover label {
+  cursor: pointer;
+}
+
+/* Estilo da tabela com DataTables */
+#example-wrapper {
+  color: var(--color-white) !important;
+}
+
+table.dataTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.dataTable th, table.dataTable td {
+  padding: 10px;
+  text-align: left;
+}
+
+table.dataTable th {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+table.dataTable tbody tr:nth-child(even) {
+  background-color: #2e2e2e;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: #1a1a1a;
+}
+
+table.dataTable .dataTables_length {
+  color: #fff;
+}
+
+table.dataTable .dataTables_info {
+  color: #fff;
+}
+
+table.dataTable .dataTables_paginate {
+  color: #fff;
+}
+
+
+/* Estilizando o campo de busca */
+.dataTables_length, .dataTables_filter {
+  margin-bottom: 20px;
+}
+
+.dataTables_length label, .dataTables_filter label{
+  height: 33px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.dataTables_filter input {
+  color: #fff; /* Cor do texto dentro da pesquisa */
+  background-color: var(--color-input-bg) !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+/* Estilizando o select de resultados por página */
+.dataTables_length select {
+  color: #fff; 
+  background-color: var(--color-input-bg) !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0 5px 0 5px !important;
+}
+
+.dataTables_length select option {
+  color: #fff;
 }

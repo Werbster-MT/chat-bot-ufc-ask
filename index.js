@@ -5,6 +5,13 @@ const app = express();
 const port = 3000;
 const session = require("express-session");
 const path = require("path");
+const fs = require('fs');
+
+// Garante que a pasta uploads exista
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
 const router = require("./routers/index");
 
