@@ -520,6 +520,13 @@ body {
   background-color: var(--color-primary-hover);
 }
 
+/* Estilo do botão quando desabilitado */
+.user-query button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 /* ChatBox */
 .content.main-chatbox {
   min-height: 100vh;
@@ -696,4 +703,43 @@ table.dataTable .dataTables_paginate {
 
 .dataTables_length select option {
   color: #fff;
+}
+
+/* Loading Animation */
+.loading-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #888;
+  animation: loading-dots 1.4s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes loading-dots {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
