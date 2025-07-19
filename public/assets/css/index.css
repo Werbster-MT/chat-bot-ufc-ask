@@ -22,6 +22,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
+  min-height: 100vh;
 }
 
 body {
@@ -38,6 +39,7 @@ body {
   background-position: center bottom;
   background-size: cover;
   background-color: #121212;
+  min-height: 100vh;
 }
 
 .cadastro {
@@ -441,6 +443,9 @@ body {
   /* espaço da sidebar */
   padding: 32px;
   flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .theme-button {
@@ -518,6 +523,8 @@ body {
 /* ChatBox */
 .content.main-chatbox {
   min-height: 100vh;
+  height: auto;
+  flex: 1;
 }
 
 .conversation-box {
@@ -525,6 +532,8 @@ body {
   flex-direction: column;
   gap: 16px;
   margin-top: 32px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .chat-label {
