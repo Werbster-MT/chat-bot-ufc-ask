@@ -15,6 +15,10 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/imgs/small_ufc_logo.png" type="image/x-icon">
+
     <!-- Estilos customizados -->
     <link rel="stylesheet" href="/assets/css/index.css" />
     <!-- FontAwesome -->
@@ -24,14 +28,18 @@
     ></script>
   </head>
 
-  <body class="d-flex justify-content-center align-items-center vh-100">
+  <body>
+    <!-- Incluindo a sidebar -->
+    <header>
+      <%- include('components/header.ejs') %>
+    </header>
+
     <!-- Incluindo a sidebar -->
     <aside class="sidebar-container">
       <%- include('components/sideBar.ejs') %>
-      <!-- Aqui está a inclusão da sidebar -->
     </aside>
 
-    <main class="content">
+    <main class="content main-home d-flex flex-column justify-content-center align-items-center">
       <div class="text-center mb-5">
         <h1 class="mb-2 wrap-title">
           Bem Vindo ao <span class="title-gradient">UFC ASK</span>
@@ -48,7 +56,7 @@
       </div>
 
       <!-- Formulário de Pergunta do Usuário -->
-      <form action="/chatBox" method="POST" class="text-center">
+      <form action="/chatBox" method="POST" class="text-center w-100">
         <div class="user-query d-flex flex-row justify-content-center">
           <input
             type="text"
