@@ -31,16 +31,35 @@
   </div>
 </div>
 
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- SweetAlert2 Custom -->
+<script src="/assets/js/sweetalert-custom.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("del_chats");
     if (form) {
       form.addEventListener("submit", function (event) {
-        const res = confirm("Tem certeza que deseja apagar todas as conversas?");
-        if (!res) {
-          event.preventDefault();
-        }
+        event.preventDefault();
+        confirmarExclusaoConversas();
       });
     }
   });
+
+  function confirmarExclusaoConversas() {
+    SwalCustom.deleteConversations(function(confirmed) {
+      if (confirmed) {
+        SwalCustom.loading('Apagando conversas...');
+        
+        // Criar formulário dinâmico para enviar a requisição
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/deleteChats';
+        
+        document.body.appendChild(form);
+        form.submit();
+      }
+    });
+  }
 </script>

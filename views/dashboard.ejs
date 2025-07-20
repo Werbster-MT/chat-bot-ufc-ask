@@ -25,6 +25,10 @@
 
     <!-- Estilos customizados -->
     <link rel="stylesheet" href="/assets/css/index.css" />
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 Custom -->
+    <script src="/assets/js/sweetalert-custom.js"></script>
     <!-- FontAwesome -->
     <script
       src="https://kit.fontawesome.com/0c23645969.js"
@@ -55,7 +59,7 @@
             action="/addDocument"
             method="POST"
             enctype="multipart/form-data"
-            onsubmit="return validar()"
+            onsubmit="return validarEEnviar()"
             novalidate
           >
             <div class="row d-flex flex-row justify-content-between align-items-center">
@@ -113,12 +117,16 @@
               <% sources.forEach(source => { %>
                 <tr>
                   <td class="text-center">
-                    <form method="POST" action="/delete/by-source" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este documento?')">
-                      <input type="hidden" name="source" value="<%= source.source || source.name %>">
-                      <button type="submit" class="btn btn delete-document" title="excluir documento">
-                        <i class="fa-solid fa-trash"></i>
-                      </button>
-                    </form>
+                    <button 
+                      type="button" 
+                      class="btn btn delete-document" 
+                      title="excluir documento"
+                      data-source="<%= source.source || source.name %>"
+                      data-nome="<%= source.source || 'Documento' %>"
+                      onclick="confirmarExclusao(this.dataset.source, this.dataset.nome)"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
                   </td>
                   <td><%= source.source || 'Documento' %></td>
                   <td><%= source.tipo || 'Documento' %></td>
@@ -163,17 +171,71 @@
         let ok = true;
 
         if (!link.value && !pdf.value) {
-          window.alert('Preencha um dos campos')
+          SwalCustom.error('Campo obrigatório', 'Preencha um dos campos (link ou arquivo PDF)');
           ok = false;
         }
         if (((link.value || pdf.value) && (link.value && pdf.value))) {
-          window.alert('Selecione apenas um link ou um PDF')
+          SwalCustom.warning('Seleção inválida', 'Selecione apenas um link ou um PDF, não ambos');
           ok = false;
         }
         
         return ok;
       }
 
+      function validarEEnviar() {
+        if (validar()) {
+          SwalCustom.loading('Adicionando documento...');
+          return true;
+        }
+        return false;
+      }
+
+      function confirmarExclusao(source, nomeDocumento) {
+        SwalCustom.deleteConfirm(nomeDocumento, function(confirmed) {
+          if (confirmed) {
+            SwalCustom.loading('Excluindo documento...');
+            
+            // Criar formulário dinâmico para enviar a requisição
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/delete/by-source';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'source';
+            input.value = source;
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+          }
+        });
+      }
+
+      // Função para mostrar sucesso na adição de documento
+      function mostrarSucessoAdicao() {
+        SwalCustom.success('Documento adicionado!', 'O documento foi adicionado com sucesso à base de conhecimento.');
+      }
+
+      // Função para mostrar erro na adição de documento
+      function mostrarErroAdicao(mensagem) {
+        SwalCustom.error('Erro ao adicionar documento', mensagem || 'Ocorreu um erro ao adicionar o documento. Tente novamente.');
+      }
+
+      // Verificar se há mensagens de sucesso ou erro na URL
+      $(document).ready(function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+        const error = urlParams.get('error');
+        
+        if (success === 'true') {
+          mostrarSucessoAdicao();
+        }
+        
+        if (error) {
+          mostrarErroAdicao(decodeURIComponent(error));
+        }
+      });
 
     </script>
   </body>
