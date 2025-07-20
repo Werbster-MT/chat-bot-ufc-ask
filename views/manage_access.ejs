@@ -15,15 +15,22 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/imgs/small_ufc_logo.png" type="image/x-icon">
+
     <!-- Estilos customizados -->
     <link rel="stylesheet" href="/assets/css/index.css" />
   </head>
 
   <body class="d-flex justify-content-center align-items-center min-vh-100">
-    <main class="text-center">
-      <h1 class="mb-4 title-gradient">
-        <span>UFC ASK</span>
-      </h1>
+    <main class="text-center main-login">
+      <div class="logo-container d-flex flex-row justify-content-center align-items-center mb-4 ">
+        <h1 class="title-gradient">
+          <span>UFC ASK</span>
+        </h1>
+        <img class="ms-3" src="/assets/imgs/small_ufc_logo.png" alt="Logo UFC" class="ufc-logo">
+      </div>
 
       <div class="login-box mx-auto">
         <% if (error) { %>

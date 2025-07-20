@@ -7,8 +7,6 @@
   <div class="mt-3 w-100">
     <% if (userRole == 'admin') { %>
         <%- include('./sideBarButton', { iconPath: `/assets/imgs/dashboard.svg`, buttonText: 'Dashboard', method: 'get', action: '/dashboard' }) %>
-        <%- include('./sideBarButton', { iconPath: `/assets/imgs/upload.svg`, buttonText: 'Histórico de Uploads',  method: 'get', action: '#' }) %>
-        <%- include('./sideBarButton', { iconPath: `/assets/imgs/sistema.svg`, buttonText: 'Estatísticas do Sistema',  method: 'get', action: '#' }) %>
     <%} else {%>
         <!-- Percorrer sobre os chats salvos via session para preencher os links -->
         <% if (chats) {%>
@@ -24,13 +22,11 @@
     <% } %>
   </div>
 
-  <div class="mt-auto">
+  <div class="mt-auto w-100">
     <hr class="my-3 w-100" />
     <% if (userRole == 'estudante') { %>
         <%- include('./sideBarButton', { iconPath: `/assets/imgs/delete.svg`, buttonText: 'Apagar Conversas',  method: 'post', action: '/deleteChats', id: 'del_chats' }) %>
     <% } %>
-    <%- include('./sideBarButton', { iconPath: `/assets/imgs/tema.svg`, buttonText: 'Trocar para Modo Claro',  method: 'get', action: '#' }) %>
-    <%- include('./sideBarButton', { iconPath: `/assets/imgs/novaGuia.svg`, buttonText: 'Updates & FAQ',  method: 'get', action: '#' }) %>
     <%- include('./sideBarButton', { iconPath: `/assets/imgs/logOff.svg`, buttonText: 'Sair', textColor: '#FF5555',  method: 'get', action: '/logout/'}) %>
   </div>
 </div>

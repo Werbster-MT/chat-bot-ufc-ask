@@ -1,23 +1,65 @@
-/* Project Palette */
+/* ========================================
+   VARIÁVEIS CSS E PALETA DE CORES
+   ======================================== */
 :root {
-  --color-background: #222;
+  /* Cores principais */
+  --color-background: #121212;
   --color-foreground: #e5e5e5;
-  --color-border: rgba(255, 255, 255, 0.15);
+  --color-white: #ffffff;
+  
+  /* Cores de fundo */
   --color-box-bg: #181818a1;
   --color-input-bg: #1e1e1e;
+  --color-sidebar-bg: #222;
+  --color-card-bg: #2e2e2e;
+  --color-table-header: #1a1a1a;
+  --color-table-row-even: #2e2e2e;
+  --color-table-row-hover: #1a1a1a;
+  
+  /* Cores de borda */
+  --color-border: rgba(255, 255, 255, 0.15);
   --color-input-border: #444;
+  
+  /* Cores de texto */
   --color-input-placeholder: #888;
-  --color-white: #ffffff;
   --color-link: #aaa;
   --color-link-hover: #fff;
-
+  --color-text-muted: #B0B0B0;
+  --color-text-secondary: #e5e5e54c;
+  
+  /* Cores primárias */
   --color-primary: #019a5acc;
   --color-primary-hover: #0bbf6a;
-
+  --color-primary-light: rgba(9, 127, 77, 0.5);
+  --color-primary-dark: rgba(9, 127, 77, 0);
+  
+  /* Cores de estado */
+  --color-danger: #FF000080;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+  
+  /* Cores de loading */
+  --color-loading: #888;
+  
+  /* Cores de sombra */
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-shadow-light: rgba(0, 0, 0, 0.07);
+  --color-shadow-medium: rgba(0, 0, 0, 0.3);
+  
+  /* Gradientes */
   --gradient-title: linear-gradient(90deg, var(--color-primary) 0%, var(--color-background) 100%);
-  --color-danger-bg: #FF000080;
+  --gradient-primary: linear-gradient(90deg, var(--color-primary-light) 0%, var(--color-primary-dark) 100%);
+  
+  /* Opacidades */
+  --opacity-light: 0.05;
+  --opacity-medium: 0.8;
+  --opacity-heavy: 0.1;
 }
 
+/* ========================================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ======================================== */
 html, body {
   margin: 0;
   padding: 0;
@@ -30,18 +72,67 @@ body {
   margin: 0;
   padding: 0;
   color: var(--color-foreground);
-
   border: 1px solid var(--color-border);
   background: var(--color-background);
-
+  overflow-x: hidden;
   background-image: url("../imgs/gradient_brackgound_login.png");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
-  background-color: #121212;
-  min-height: 100vh;
 }
 
+/* ========================================
+   PÁGINA DE LOGIN
+   ======================================== */
+.main-login::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../imgs/logo_ufc.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
+  opacity: 0.06;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ========================================
+   CONTAINERS PRINCIPAIS E LOGO DE FUNDO
+   ======================================== */
+.new-ask-container, .dashboard-container, .user-perfil-container {
+  /* Container para o conteúdo principal */
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  width: 100%;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-image: url("../imgs/logo_ufc.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30%;
+  opacity: 0.06;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ========================================
+   COMPONENTES DE FORMULÁRIO
+   ======================================== */
 .cadastro {
   display: flex;
   flex-direction: column;
@@ -51,7 +142,7 @@ body {
   justify-content: space-between;
   padding: 34px 47px;
   position: relative;
-  background-color: #181818a1;
+  background-color: var(--color-box-bg);
   border-radius: 25px;
   overflow: hidden;
 }
@@ -99,7 +190,7 @@ body {
   left: 14px;
   font-family: "Inter-Medium", Helvetica;
   font-weight: 500;
-  color: #e5e5e54c;
+  color: var(--color-text-secondary);
   font-size: 16px;
   letter-spacing: 0;
   line-height: 24.8px;
@@ -125,7 +216,7 @@ body {
   padding: 12px 16px;
   position: relative;
   z-index: 1;
-  background-color: #019a5acc;
+  background-color: var(--color-primary);
   border-radius: 10px;
 }
 
@@ -136,7 +227,7 @@ body {
   margin-bottom: -3.50px;
   font-family: "Jersey 20-Regular", Helvetica;
   font-weight: 400;
-  color: #e5e5e5;
+  color: var(--color-foreground);
   font-size: 28px;
   text-align: center;
   letter-spacing: 0;
@@ -149,7 +240,7 @@ body {
   height: 83px;
   gap: 1px;
   z-index: 0;
-  background-color: #120e0e80;
+  background-color: rgba(18, 14, 14, 0.5);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -165,7 +256,7 @@ body {
   margin-left: -24.00px;
   margin-right: -24.00px;
   border-radius: 12px;
-  box-shadow: 0px 0px 4px #00000012;
+  box-shadow: 0px 0px 4px var(--color-shadow-light);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,13 +271,16 @@ body {
   font-family: "Inter-Italic", Helvetica;
   font-weight: 400;
   font-style: italic;
-  color: #e5e5e5;
+  color: var(--color-foreground);
   font-size: 16px;
   letter-spacing: 0;
   line-height: 24px;
   white-space: nowrap;
 }
 
+/* ========================================
+   TÍTULOS E TEXTOS
+   ======================================== */
 .wrap-title {
   font-size: 48px;
   font-weight: 600;
@@ -200,18 +294,26 @@ body {
 
 .title-gradient {
   display: inline-block;
-  background: linear-gradient(90deg,
-      rgba(9, 127, 77, 0.5) 0%,
-      rgba(9, 127, 77, 0) 100%);
+  background: var(--gradient-primary);
   color: var(--color-white);
   font-size: 48px;
+  margin-bottom: 0;
 }
 
+.logo-container > img {
+  display: none;
+}
+
+/* ========================================
+   LOGIN BOX
+   ======================================== */
 .login-box {
   background-color: var(--color-box-bg);
   padding: 30px;
   border-radius: 16px;
   width: 483px;
+  position: relative;
+  z-index: 1;
 }
 
 .login-box .form-control {
@@ -254,10 +356,13 @@ body {
   color: var(--color-link-hover);
 }
 
+/* ========================================
+   COMPONENTES DE USUÁRIO
+   ======================================== */
 /* Estilo do container do usuário */
 .user-box {
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, var(--opacity-light));
   width: 100%;
   height: 69px;
   padding-left: 16px;
@@ -269,7 +374,7 @@ body {
 
 /* Estilo do círculo onde o ícone ficará */
 .circle {
-  background-color: #019A5A;  /* Cor do círculo */
+  background-color: var(--color-primary);  /* Cor do círculo */
   border-radius: 50%;
   width: 40px;  /* Largura do círculo */
   height: 40px; /* Altura do círculo */
@@ -287,7 +392,7 @@ body {
 
 /* Estilo do ícone dentro do círculo */
 .circle i {
-  color: white; /* Cor do ícone dentro do círculo */
+  color: var(--color-white); /* Cor do ícone dentro do círculo */
   font-size: 20px; /* Ajuste o tamanho do ícone */
 }
 
@@ -309,7 +414,7 @@ body {
 /* Estilo do ícone dentro da div */
 .perfil-icon i {
   font-size: 150px; /* Ajuste o tamanho do ícone aqui */
-  color: white;
+  color: var(--color-white);
   width: auto; /* Garante que o ícone não ultrapasse os limites da div */
   height: auto; /* Garante que a altura do ícone não ultrapasse a div */
 }
@@ -379,7 +484,7 @@ body {
 }
 
 .delete-account:hover, .delete-document:hover {
-  color: var(--color-danger-bg);
+  color: var(--color-danger);
   transform: scale(1.1);  
 }
 
@@ -391,7 +496,7 @@ body {
 }
 
 .attachment-icon:hover {
-  color: #28a745; /* Verde */
+  color: var(--color-success); /* Verde */
   transform: scale(1.1);
 }
 
@@ -399,13 +504,13 @@ body {
 .user-title {
   font-weight: bold;
   font-size: 16px;
-  color: #fff;
+  color: var(--color-white);
 }
 
 /* Estilo do email do usuário */
 .email-title {
   font-size: 12px;
-  color: #B0B0B0;
+  color: var(--color-text-muted);
   font-weight: 400;
 }
 
@@ -420,6 +525,9 @@ body {
   transform: scale(1.02);
 }
 
+/* ========================================
+   SIDEBAR
+   ======================================== */
 .sidebar {
   position: fixed;
   top: 0;
@@ -433,11 +541,15 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
 
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
-  background: #222;
-  color: white;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-sidebar-bg);
+  color: var(--color-white);
+  z-index: 1000;
 }
 
+/* ========================================
+   CONTENT (ÁREA PRINCIPAL)
+   ======================================== */
 .content {
   margin-left: 280px;
   /* espaço da sidebar */
@@ -446,6 +558,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .theme-button {
@@ -457,9 +570,9 @@ body {
 
   border: none;
   border-radius: 12px;
-  background-color: #222;
-  color: #E5E5E5;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.07);
+  background-color: var(--color-sidebar-bg);
+  color: var(--color-foreground);
+  box-shadow: 0px 0px 4px 0px var(--color-shadow-light);
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-style: normal;
@@ -469,7 +582,7 @@ body {
 }
 
 .theme-button:hover {
-  background-color: #2e2e2e;
+  background-color: var(--color-card-bg);
 }
 
 .theme-button img {
@@ -477,7 +590,9 @@ body {
   height: 20px;
 }
 
-/* Chat Style */
+/* ========================================
+   CHAT E INPUTS
+   ======================================== */
 /* Estilo do contêiner do input e botão */
 .user-query {
   display: flex;
@@ -522,11 +637,14 @@ body {
 
 /* Estilo do botão quando desabilitado */
 .user-query button:disabled {
-  background-color: #666;
+  background-color: var(--color-input-placeholder);
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: var(--opacity-medium);
 }
 
+/* ========================================
+   CONVERSATION BOX
+   ======================================== */
 /* ChatBox */
 .content.main-chatbox {
   min-height: 100vh;
@@ -541,6 +659,10 @@ body {
   margin-top: 32px;
   flex: 1;
   overflow-y: auto;
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  width: 100%;
 }
 
 .chat-label {
@@ -554,30 +676,33 @@ body {
   font-size: 15px;
   line-height: 1;
   word-wrap: break-word;
-  background-color: #1e1e1e;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-input-bg);
+  box-shadow: 0px 0px 6px var(--color-shadow);
 }
 
 .user-message {
-  background-color: #019a5acc;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   align-self: flex-end;
   border-bottom-right-radius: 0;
 }
 
 .bot-response {
-  background-color: #2e2e2e;
-  color: white;
+  background-color: var(--color-card-bg);
+  color: var(--color-white);
   align-self: flex-start;
   border-bottom-left-radius: 0;
 }
 
+/* ========================================
+   FORMULÁRIOS DE UPLOAD
+   ======================================== */
 /* Estilo do formulário de upload */
 .form-upload {
   background-color: var(--color-box-bg);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px var(--color-shadow-medium);
 }
 
 .form-upload label {
@@ -585,7 +710,7 @@ body {
 }
 
 .form-upload .form-control {
-  background-color: #121212;
+  background-color: var(--color-background);
   color: var(--color-input-placeholder);
   border: 1px solid var(--color-input-border);
   border-radius: 8px;
@@ -624,6 +749,9 @@ body {
   cursor: pointer;
 }
 
+/* ========================================
+   TABELAS E DATATABLES
+   ======================================== */
 /* Estilo da tabela com DataTables */
 #example-wrapper {
   color: var(--color-white) !important;
@@ -640,28 +768,28 @@ table.dataTable th, table.dataTable td {
 }
 
 table.dataTable th {
-  background-color: #1a1a1a;
-  color: #fff;
+  background-color: var(--color-table-header);
+  color: var(--color-white);
 }
 
 table.dataTable tbody tr:nth-child(even) {
-  background-color: #2e2e2e;
+  background-color: var(--color-table-row-even);
 }
 
 table.dataTable tbody tr:hover {
-  background-color: #1a1a1a;
+  background-color: var(--color-table-row-hover);
 }
 
 table.dataTable .dataTables_length {
-  color: #fff;
+  color: var(--color-white);
 }
 
 table.dataTable .dataTables_info {
-  color: #fff;
+  color: var(--color-white);
 }
 
 table.dataTable .dataTables_paginate {
-  color: #fff;
+  color: var(--color-white);
 }
 
 
@@ -679,7 +807,7 @@ table.dataTable .dataTables_paginate {
 }
 
 .dataTables_filter input {
-  color: #fff; /* Cor do texto dentro da pesquisa */
+  color: var(--color-white); /* Cor do texto dentro da pesquisa */
   background-color: var(--color-input-bg) !important;
   border: none !important;
   outline: none !important;
@@ -690,7 +818,7 @@ table.dataTable .dataTables_paginate {
 
 /* Estilizando o select de resultados por página */
 .dataTables_length select {
-  color: #fff; 
+  color: var(--color-white); 
   background-color: var(--color-input-bg) !important;
   border: none !important;
   outline: none !important;
@@ -702,9 +830,53 @@ table.dataTable .dataTables_paginate {
 }
 
 .dataTables_length select option {
-  color: #fff;
+  color: var(--color-white);
 }
 
+/* ========================================
+   HEADER E LOGO
+   ======================================== */
+/* Header com Logo */
+.header-container {
+  position: fixed;
+  top: -10px;
+  right: -10px;
+  z-index: 1000;
+  padding: 20px;
+  pointer-events: none; /* Permite clicar através do header */
+}
+
+/* Página Home */
+.content.main-home {
+  min-height: 100vh;
+  padding-top: 100px; /* Espaço para o header */
+}
+
+/* Ajuste para o chat */
+.content.main-chatbox {
+  padding-top: 20px; /* Menos espaço no chat */
+}
+
+.header-logo {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ufc-logo {
+  width: 40px;
+  height: auto;
+  opacity: 0.8;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  transition: opacity 0.3s ease;
+}
+
+.ufc-logo:hover {
+  opacity: 1;
+}
+
+/* ========================================
+   ANIMAÇÕES E LOADING
+   ======================================== */
 /* Loading Animation */
 .loading-dots {
   display: flex;
@@ -717,7 +889,7 @@ table.dataTable .dataTables_paginate {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #888;
+  background-color: var(--color-loading);
   animation: loading-dots 1.4s infinite ease-in-out;
 }
 
