@@ -1,7 +1,9 @@
-/* Project Palette */
+/* ========================================
+   VARIÁVEIS CSS E PALETA DE CORES
+   ======================================== */
 :root {
   /* Cores principais */
-  --color-background: #222;
+  --color-background: #121212;
   --color-foreground: #e5e5e5;
   --color-white: #ffffff;
   
@@ -55,6 +57,9 @@
   --opacity-heavy: 0.1;
 }
 
+/* ========================================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ======================================== */
 html, body {
   margin: 0;
   padding: 0;
@@ -67,18 +72,67 @@ body {
   margin: 0;
   padding: 0;
   color: var(--color-foreground);
-
   border: 1px solid var(--color-border);
   background: var(--color-background);
-
+  overflow-x: hidden;
   background-image: url("../imgs/gradient_brackgound_login.png");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
-  background-color: #121212;
-  min-height: 100vh;
 }
 
+/* ========================================
+   PÁGINA DE LOGIN
+   ======================================== */
+.main-login::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../imgs/logo_ufc.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
+  opacity: 0.06;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ========================================
+   CONTAINERS PRINCIPAIS E LOGO DE FUNDO
+   ======================================== */
+.new-ask-container, .dashboard-container, .user-perfil-container {
+  /* Container para o conteúdo principal */
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  width: 100%;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-image: url("../imgs/logo_ufc.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30%;
+  opacity: 0.06;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ========================================
+   COMPONENTES DE FORMULÁRIO
+   ======================================== */
 .cadastro {
   display: flex;
   flex-direction: column;
@@ -224,6 +278,9 @@ body {
   white-space: nowrap;
 }
 
+/* ========================================
+   TÍTULOS E TEXTOS
+   ======================================== */
 .wrap-title {
   font-size: 48px;
   font-weight: 600;
@@ -243,11 +300,20 @@ body {
   margin-bottom: 0;
 }
 
+.logo-container > img {
+  display: none;
+}
+
+/* ========================================
+   LOGIN BOX
+   ======================================== */
 .login-box {
   background-color: var(--color-box-bg);
   padding: 30px;
   border-radius: 16px;
   width: 483px;
+  position: relative;
+  z-index: 1;
 }
 
 .login-box .form-control {
@@ -290,6 +356,9 @@ body {
   color: var(--color-link-hover);
 }
 
+/* ========================================
+   COMPONENTES DE USUÁRIO
+   ======================================== */
 /* Estilo do container do usuário */
 .user-box {
   border-radius: 10px;
@@ -456,6 +525,9 @@ body {
   transform: scale(1.02);
 }
 
+/* ========================================
+   SIDEBAR
+   ======================================== */
 .sidebar {
   position: fixed;
   top: 0;
@@ -472,8 +544,12 @@ body {
   border-right: 1px solid var(--color-border);
   background: var(--color-sidebar-bg);
   color: var(--color-white);
+  z-index: 1000;
 }
 
+/* ========================================
+   CONTENT (ÁREA PRINCIPAL)
+   ======================================== */
 .content {
   margin-left: 280px;
   /* espaço da sidebar */
@@ -482,6 +558,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .theme-button {
@@ -513,7 +590,9 @@ body {
   height: 20px;
 }
 
-/* Chat Style */
+/* ========================================
+   CHAT E INPUTS
+   ======================================== */
 /* Estilo do contêiner do input e botão */
 .user-query {
   display: flex;
@@ -563,6 +642,9 @@ body {
   opacity: var(--opacity-medium);
 }
 
+/* ========================================
+   CONVERSATION BOX
+   ======================================== */
 /* ChatBox */
 .content.main-chatbox {
   min-height: 100vh;
@@ -577,6 +659,10 @@ body {
   margin-top: 32px;
   flex: 1;
   overflow-y: auto;
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  width: 100%;
 }
 
 .chat-label {
@@ -608,6 +694,9 @@ body {
   border-bottom-left-radius: 0;
 }
 
+/* ========================================
+   FORMULÁRIOS DE UPLOAD
+   ======================================== */
 /* Estilo do formulário de upload */
 .form-upload {
   background-color: var(--color-box-bg);
@@ -660,6 +749,9 @@ body {
   cursor: pointer;
 }
 
+/* ========================================
+   TABELAS E DATATABLES
+   ======================================== */
 /* Estilo da tabela com DataTables */
 #example-wrapper {
   color: var(--color-white) !important;
@@ -741,6 +833,9 @@ table.dataTable .dataTables_paginate {
   color: var(--color-white);
 }
 
+/* ========================================
+   HEADER E LOGO
+   ======================================== */
 /* Header com Logo */
 .header-container {
   position: fixed;
@@ -779,6 +874,9 @@ table.dataTable .dataTables_paginate {
   opacity: 1;
 }
 
+/* ========================================
+   ANIMAÇÕES E LOADING
+   ======================================== */
 /* Loading Animation */
 .loading-dots {
   display: flex;

@@ -29,16 +29,13 @@
   </head>
 
   <body>
-    <header>
-      <%- include('components/header.ejs') %>
-    </header>
-
     <aside class="sidebar-container">
       <%- include('components/sideBar.ejs') %>
     </aside>
 
     <main class="content p-4 min-vh-100">
-      <!-- Seção de Perfil -->
+      <div class="user-perfil-container">
+         <!-- Seção de Perfil -->
       <h1 class="mb-4 text-start">Perfil</h1>
       <div class="d-flex justify-content-center text-center mb-5">
         <div class="perfil-box d-flex flex-column justify-content-center">
@@ -93,6 +90,7 @@
           >
           </form>
         </div>
+      </div>
       </div>
     </main>
   </body>
