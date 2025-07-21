@@ -7,36 +7,39 @@ const crypto = require("crypto"); // para gerar o código
 
 class AccessController {
   index(req, res) {
-    const type = req.query.type || ""; // Pega o tipo da query string, ou um valor vazio
-    res.render("manage_access", { error: null, type: type });
+    const action_type = req.query.action_type || ""; // Pega o tipo da query string, ou um valor vazio
+    res.render("manage_access", { title: "Primeiro Acesso", message: null, type: null, action_type: action_type });
   }
 
   async sendCode(req, res) {
     try {
-      const { email , type } = req.body;
-
+      const { email , action_type } = req.body;
+      console.log(email);
+      console.log(action_type);
       // Verificar se o email já existe no banco de dados
       const user = await User.findOne({ where: { email } });
 
       // Se o usuário for encontrado e for "primeiro acesso", redireciona para o login
-      if (user && type == "access") {
+      if (user && action_type == "access") {
         return res.render("login", {
-          error: "Este email já está cadastrado. Faça login.",
+          title: "Login",
+          message: "Este email já está cadastrado. Faça login.",
+          type: "error",
         });
       }
 
       // Se for "esqueci minha senha" ou "primeiro acesso" (para um novo usuário), gera o código
       const code = this.generateCode();
-      req.session.userAccess = { email, code, type };
+      req.session.userAccess = { email, code, action_type };
 
       // Enviar o código por email
       await this.sendEmail(email, code);
 
       // Renderiza a página de código enviado
-      return res.render("code_access", { error: null });
+      return res.render("code_access", { title: "Código de Acesso", message: null, type: null });
     } catch (error) {
       console.error("Erro no envio do código:", error);
-      res.render("manage_access", { error: "Erro ao tentar enviar o código." });
+      res.render("manage_access", { message: "Erro ao tentar enviar o código.", type: "error" , action_type: action_type});
     }
   }
 
@@ -73,24 +76,26 @@ class AccessController {
   }
 
   signIn(req, res) {
-    const { email, code: storedCode, type } = req.session.userAccess || {};
-    const endpoint = type == 'password' ? '/update-password' : '/save-user';
-    const title = type == 'password' ? 'Redefinir Senha' : 'Cadastrar Conta';
-    res.render("access_form", { error: null, endpoint: endpoint , title: title});
+    const { action_type } = req.session.userAccess || {};
+    console.log(req.session.userAccess);
+    console.log(action_type);
+    const endpoint = action_type == 'password' ? '/update-password' : '/save-user';
+    const title = action_type == 'password' ? 'Redefinir Senha' : 'Cadastrar Conta';
+    res.render("access_form", { message: null, type: null, endpoint: endpoint , title: title});
   }
 
   saveUser(req, res) {
     const { code, password01, password02 } = req.body;
-    const { email, code: storedCode, type } = req.session.userAccess || {};
-    const endpoint = type == 'password' ? '/update-password' : '/save-user';
-    const title = type == 'password' ? 'Redefinir Senha' : 'Cadastrar Conta';
+    const { email, code: storedCode, action_type } = req.session.userAccess || {};
+    const endpoint = action_type == 'password' ? '/update-password' : '/save-user';
+    const title = action_type == 'password' ? 'Redefinir Senha' : 'Cadastrar Conta';
 
     if (!email || code !== storedCode) {
-      return res.render("access_form", { error: "Código inválido ou expirado.",  endpoint: endpoint, title: title });
+      return res.render("access_form", { message: "Código inválido ou expirado.", type: "error", endpoint: endpoint, title: title });
     }
 
     if (password01 !== password02) {
-      return res.render("access_form", { error: "Senhas não coincidem.",  endpoint: endpoint, title: title });
+      return res.render("access_form", { message: "Senhas não coincidem.", type: "error", endpoint: endpoint, title: title });
     }
 
     // Criptografar a senha e salvar o usuário
@@ -101,7 +106,7 @@ class AccessController {
       name: email.split("@")[0],
     }).then(() => {
       delete req.session.userAccess;
-      return res.render("login", { error: "Conta criada com sucesso. Faça o login."}); // Redireciona para a página de login
+      return res.render("login", { title: "Login", message: "Conta criada com sucesso. Faça o login.", type: "success"}); // Redireciona para a página de login
     });
   }
 

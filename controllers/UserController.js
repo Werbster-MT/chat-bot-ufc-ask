@@ -1,5 +1,4 @@
-const { User, userRoles } = require("../models/UserModel");
-const bcrypt = require("bcrypt");
+const { User } = require("../models/UserModel");
 
 class UserController {
   index(req, res) {
@@ -7,7 +6,8 @@ class UserController {
     const chatResponse = req.session.chatResponse || null;
     const chats = req.session.chats || []; // Pega o histórico de chats da sessão
     res.render("user_perfil", {
-      error: null,
+      message: null,
+      type: null,
       title: "Meu Perfil",
       userName: user.name,
       userEmail: user.email,
@@ -29,8 +29,9 @@ class UserController {
       const userDB = await User.findOne({ where: { email } });
 
       if (!newUserName || !userDB) {
-        return res.status(400).render("user_perfil", {
-          error: "Nome de usuário inválido.",
+        return res.render("user_perfil", {
+          message: "Nome de usuário inválido.",
+          type: "error",
           title: "Perfil",
           userName: req.session.user.name,
           userRole: req.session.user.role,
@@ -48,7 +49,8 @@ class UserController {
       await User.update({ name: newUserName }, { where: { email } });
 
       return res.render("user_perfil", {
-        error: null,
+        message: "Nome de usuário atualizado com sucesso.",
+        type: "success",
         title: "Perfil",
         userName: newUserName,
         userEmail: req.session.user.email,
@@ -62,8 +64,9 @@ class UserController {
       const chatResponse = req.session.chatResponse || null;
       const chats = req.session.chats || [];
       console.error("Erro ao renomear usuário:", error);
-      return res.status(500).render("user_perfil", {
-        error: "Erro ao renomear usuário. Tente novamente.",
+      return res.render("user_perfil", {
+        message: "Erro ao renomear usuário. Tente novamente.",
+        type: "error",
         title: "Perfil",
         userName: req.session.user.name,
         userEmail: req.session.user.email,
@@ -101,8 +104,9 @@ class UserController {
       const chatResponse = req.session.chatResponse || null;
       const chats = req.session.chats || [];
       console.error("Erro ao excluir usuário:", error);
-      return res.status(500).render("user_perfil", {
-        error: "Erro ao excluir usuário. Tente novamente.",
+      return res.render("user_perfil", {
+        message: "Erro ao excluir usuário. Tente novamente.",
+        type: "error",
         title: "Perfil",
         userName: req.session.user.name,
         userEmail: req.session.user.email,

@@ -1,37 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= title %></title>
-
-    <!-- DataTables e Bootstrap -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Inter Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/imgs/small_ufc_logo.png" type="image/x-icon">
-
-    <!-- Estilos customizados -->
-    <link rel="stylesheet" href="/assets/css/index.css" />
-    <!-- FontAwesome -->
-    <script
-      src="https://kit.fontawesome.com/0c23645969.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-
+<%- include('components/header') %>
   <body class="d-flex justify-content-center align-items-center">
     <!-- Sidebar -->
     <aside class="sidebar-container">
@@ -41,12 +8,6 @@
     <main class="content p-4">
       <div class="dashboard-container">
         <h1 class="mb-4 text-start">Dashboard</h1>
-      
-        <% if (error) { %>
-          <div class="alert alert-danger" role="alert">
-            <%= error %>
-          </div>
-        <% } %>
   
         <!-- Formulário para Adicionar Novo Documento -->
         <div class="mb-5">
@@ -55,7 +16,7 @@
             action="/addDocument"
             method="POST"
             enctype="multipart/form-data"
-            onsubmit="return validar()"
+            onsubmit="return validarEEnviar()"
             novalidate
           >
             <div class="row d-flex flex-row justify-content-between align-items-center">
@@ -113,12 +74,16 @@
               <% sources.forEach(source => { %>
                 <tr>
                   <td class="text-center">
-                    <form method="POST" action="/delete/by-source" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este documento?')">
-                      <input type="hidden" name="source" value="<%= source.source || source.name %>">
-                      <button type="submit" class="btn btn delete-document" title="excluir documento">
-                        <i class="fa-solid fa-trash"></i>
-                      </button>
-                    </form>
+                    <button 
+                      type="button" 
+                      class="btn btn delete-document" 
+                      title="excluir documento"
+                      data-source="<%= source.source || source.name %>"
+                      data-nome="<%= source.source || 'Documento' %>"
+                      onclick="confirmarExclusao(this.dataset.source, this.dataset.nome)"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
                   </td>
                   <td><%= source.source || 'Documento' %></td>
                   <td><%= source.tipo || 'Documento' %></td>
@@ -163,18 +128,58 @@
         let ok = true;
 
         if (!link.value && !pdf.value) {
-          window.alert('Preencha um dos campos')
+          SwalCustom.error('Campo obrigatório', 'Preencha um dos campos (link ou arquivo PDF)');
           ok = false;
         }
         if (((link.value || pdf.value) && (link.value && pdf.value))) {
-          window.alert('Selecione apenas um link ou um PDF')
+          SwalCustom.warning('Seleção inválida', 'Selecione apenas um link ou um PDF, não ambos');
           ok = false;
         }
         
         return ok;
       }
 
+      function validarEEnviar() {
+        if (validar()) {
+          SwalCustom.loading('Adicionando documento...');
+          return true;
+        }
+        return false;
+      }
+
+      function confirmarExclusao(source, nomeDocumento) {
+        SwalCustom.deleteConfirm(nomeDocumento, function(confirmed) {
+          if (confirmed) {
+            SwalCustom.loading('Excluindo documento...');
+            
+            // Criar formulário dinâmico para enviar a requisição
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/delete/by-source';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'source';
+            input.value = source;
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+          }
+        });
+      }
+
+      // Função para mostrar sucesso na adição de documento
+      function mostrarSucessoAdicao() {
+        SwalCustom.success('Documento adicionado!', 'O documento foi adicionado com sucesso à base de conhecimento.');
+      }
+
+      // Função para mostrar erro na adição de documento
+      function mostrarErroAdicao(mensagem) {
+        SwalCustom.error('Erro ao adicionar documento', mensagem || 'Ocorreu um erro ao adicionar o documento. Tente novamente.');
+      }
 
     </script>
   </body>
-</html>
+
+<%- include('components/footer') %>

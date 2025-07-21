@@ -1,33 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= title %></title>
-
-    <!-- Bootstrap 5 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Inter Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/imgs/small_ufc_logo.png" type="image/x-icon">
-
-    <!-- Estilos customizados -->
-    <link rel="stylesheet" href="/assets/css/index.css" />
-    <!-- FontAwesome -->
-    <script
-      src="https://kit.fontawesome.com/0c23645969.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-
+<%- include('components/header') %>
   <body>
     <aside class="sidebar-container">
       <%- include('components/sideBar.ejs') %>
@@ -58,7 +29,7 @@
           </div>
 
           <!-- Formulário para Renomear o Usuário -->
-          <form class="mb-2" action="/rename-user" method="POST">
+          <form class="mb-2" action="/rename-user" method="POST" onsubmit="return validarRenomear()">
             <div
               class="rename-user d-flex flex-column justify-content-center mb-2 w-100"
             >
@@ -100,12 +71,68 @@
       const form = document.getElementById("del-user");
       if (form) {
         form.addEventListener("submit", function (event) {
-          const res = confirm("Tem certeza que deseja excluir sua conta?");
-          if (!res) {
-            event.preventDefault();
-          }
+          event.preventDefault();
+          confirmarExclusaoConta();
         });
       }
     });
+
+    function validarRenomear() {
+      const newUserName = document.getElementById('newUserName').value.trim();
+      
+      if (!newUserName) {
+        SwalCustom.error('Campo obrigatório', 'Por favor, insira um novo nome de usuário.');
+        return false;
+      }
+      
+      if (newUserName.length < 2) {
+        SwalCustom.warning('Nome muito curto', 'O nome deve ter pelo menos 2 caracteres.');
+        return false;
+      }
+      
+      return true;
+    }
+
+    function confirmarExclusaoConta() {
+      SwalCustom.deleteAccount(function(confirmed) {
+        if (confirmed) {
+          SwalCustom.loading('Excluindo conta...');
+          
+          // Criar formulário dinâmico para enviar a requisição
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/delete-user';
+          
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    }
+
+    // Função para mostrar sucesso na renomeação
+    function mostrarSucessoRenomeacao() {
+      SwalCustom.success('Usuário renomeado!', 'Seu nome de usuário foi alterado com sucesso.');
+    }
+
+    // Função para mostrar erro na renomeação
+    function mostrarErroRenomeacao(mensagem) {
+      SwalCustom.error('Erro ao renomear', mensagem || 'Ocorreu um erro ao renomear o usuário. Tente novamente.');
+    }
+
+    // Verificar se há mensagens de sucesso ou erro na URL
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const success = urlParams.get('success');
+      const error = urlParams.get('error');
+      
+      if (success === 'true') {
+        mostrarSucessoRenomeacao();
+      }
+      
+      if (error) {
+        mostrarErroRenomeacao(decodeURIComponent(error));
+      }
+    });
   </script>
-</html>
+
+<%- include('components/footer') %>
