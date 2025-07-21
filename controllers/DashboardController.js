@@ -19,7 +19,8 @@ class DashboardController {
       }
       
       res.render("dashboard", {
-        error: null,
+        message: null,
+        type: null,
         title: "Home Admin",
         userName: user.name,
         userEmail: user.email,
@@ -30,7 +31,8 @@ class DashboardController {
       console.error('Erro ao carregar dashboard:', error);
       const user = req.session.user;
       res.render("dashboard", {
-        error: "Erro ao carregar dados",
+        message: "Erro ao carregar dados",
+        type: "error",
         title: "Home Admin",
         userName: user.name,
         userEmail: user.email,
@@ -66,7 +68,8 @@ class DashboardController {
     } else {
       const sources = await this.getSources(token);
       return res.render('dashboard', {
-        error: 'Preencha um link ou envie um PDF.',
+        message: 'Preencha um link ou envie um PDF.',
+        type: "error",
         title: "Home Admin",
         userName: req.session.user.name,
         userEmail: req.session.user.email,
@@ -78,19 +81,23 @@ class DashboardController {
     const sources = await this.getSources(token);
 
     // Mensagem de erro/sucesso
-    let error = null;
+    let message = "Fonte adicionada com sucesso.";
+    let type = "success";
     if (req.file) {
       if (!resposta || !resposta.results || !resposta.results.some(r => r.status === "adicionado")) {
-        error = resposta?.results?.[0]?.status || resposta?.mensagem || 'Erro ao adicionar PDF.';
+        message = resposta?.results?.[0]?.status || resposta?.mensagem || 'Erro ao adicionar PDF.';
+        type = "error";
       }
     } else {
       if (!resposta || !resposta.results || !resposta.results.some(r => r.status === "success")) {
-        error = resposta?.results?.[0]?.status || resposta?.mensagem || 'Erro ao adicionar URL.';
+        message = resposta?.results?.[0]?.status || resposta?.mensagem || 'Erro ao adicionar URL.';
+        type = "error";
       }
     }
 
     return res.render('dashboard', {
-      error,
+      message: message,
+      type: type,
       title: "Home Admin",
       userName: req.session.user.name,
       userEmail: req.session.user.email,
@@ -106,7 +113,8 @@ class DashboardController {
     if (!source) {
       const sources = await this.getSources(token);
       return res.render('dashboard', {
-        error: 'Fonte não fornecida.',
+        message: 'Fonte não fornecida.',
+        type: "error",
         title: "Home Admin",
         userName: req.session.user.name,
         userEmail: req.session.user.email,
@@ -118,7 +126,8 @@ class DashboardController {
     if (!token) {
       const sources = await this.getSources(token);
       return res.render('dashboard', {
-        error: 'Token não encontrado.',
+        message: 'Token não encontrado.',
+        type: "error",
         title: "Home Admin",
         userName: req.session.user.name,
         userEmail: req.session.user.email,
@@ -133,7 +142,8 @@ class DashboardController {
     // Sempre renderiza o dashboard após a operação
     if (resposta && resposta.message) {
       return res.render('dashboard', {
-        error: null,
+        message: "Fonte excluída com sucesso.",
+        type: "success",
         title: "Home Admin",
         userName: req.session.user.name,
         userEmail: req.session.user.email,
@@ -142,7 +152,8 @@ class DashboardController {
       });
     } else {
       return res.render('dashboard', {
-        error: resposta?.message || resposta?.error || 'Erro ao excluir documento.',
+        message: resposta?.message || resposta?.error || 'Erro ao excluir documento.',
+        type: "error",
         title: "Home Admin",
         userName: req.session.user.name,
         userEmail: req.session.user.email,

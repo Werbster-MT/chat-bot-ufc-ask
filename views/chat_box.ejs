@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= title %></title>
-
-    <!-- Bootstrap 5 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Inter Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/imgs/small_ufc_logo.png" type="image/x-icon">
-
-    <!-- Estilos customizados -->
-    <link rel="stylesheet" href="/assets/css/index.css" />
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- SweetAlert2 Custom -->
-    <script src="/assets/js/sweetalert-custom.js"></script>
-    <!-- FontAwesome -->
-    <script
-      src="https://kit.fontawesome.com/0c23645969.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
+<%- include('components/header') %>
 
   <body>
     <aside class="sidebar-container">
@@ -185,4 +153,5 @@
         }
       });
   </script>
-</html>
+
+<%- include('components/footer') %>

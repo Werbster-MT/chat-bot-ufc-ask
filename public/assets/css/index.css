@@ -1005,3 +1005,59 @@ table.dataTable .dataTables_paginate {
 .swal2-icon.swal2-info {
   border-color: var(--color-info) !important;
 }
+
+/* ========================================
+   ESTILOS PARA TOASTS
+   ======================================== */
+.toast {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+}
+
+.toast-header {
+  background: var(--color-box-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.toast-success {
+  border-left: 5px solid var(--color-success);
+}
+
+.toast-error {
+  border-left: 5px solid var(--color-danger);
+}
+
+.toast-warning {
+  border-left: 5px solid var(--color-warning);
+}
+
+.toast .btn-close {
+  filter: invert(1);
+}
+
+.toast .btn-close:hover {
+  filter: invert(1) brightness(0.8);
+}
+
+.toast-container-custom {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1080;
+  min-width: 350px;
+  max-width: 400px;
+  pointer-events: none; /* permite clicar em elementos atrás do toast */
+}
+
+.toast {
+  pointer-events: auto; /* permite fechar o toast */
+}
+
+.toast-header #toast-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px #0008;
+  letter-spacing: 0.5px;
+}

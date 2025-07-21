@@ -1,41 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= title %></title>
-
-    <!-- DataTables e Bootstrap -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Inter Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/imgs/small_ufc_logo.png" type="image/x-icon">
-
-    <!-- Estilos customizados -->
-    <link rel="stylesheet" href="/assets/css/index.css" />
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- SweetAlert2 Custom -->
-    <script src="/assets/js/sweetalert-custom.js"></script>
-    <!-- FontAwesome -->
-    <script
-      src="https://kit.fontawesome.com/0c23645969.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-
+<%- include('components/header') %>
   <body class="d-flex justify-content-center align-items-center">
     <!-- Sidebar -->
     <aside class="sidebar-container">
@@ -45,12 +8,6 @@
     <main class="content p-4">
       <div class="dashboard-container">
         <h1 class="mb-4 text-start">Dashboard</h1>
-      
-        <% if (error) { %>
-          <div class="alert alert-danger" role="alert">
-            <%= error %>
-          </div>
-        <% } %>
   
         <!-- Formulário para Adicionar Novo Documento -->
         <div class="mb-5">
@@ -222,21 +179,7 @@
         SwalCustom.error('Erro ao adicionar documento', mensagem || 'Ocorreu um erro ao adicionar o documento. Tente novamente.');
       }
 
-      // Verificar se há mensagens de sucesso ou erro na URL
-      $(document).ready(function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const success = urlParams.get('success');
-        const error = urlParams.get('error');
-        
-        if (success === 'true') {
-          mostrarSucessoAdicao();
-        }
-        
-        if (error) {
-          mostrarErroAdicao(decodeURIComponent(error));
-        }
-      });
-
     </script>
   </body>
-</html>
+
+<%- include('components/footer') %>

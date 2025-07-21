@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Primeiro Acesso</title>
-
-    <!-- Bootstrap 5 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Inter Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/imgs/small_ufc_logo.png" type="image/x-icon">
-
-    <!-- Estilos customizados -->
-    <link rel="stylesheet" href="/assets/css/index.css" />
-  </head>
+<%- include('components/header') %>
 
   <body class="d-flex justify-content-center align-items-center min-vh-100">
     <main class="text-center main-login">
@@ -33,9 +10,6 @@
       </div>
 
       <div class="login-box mx-auto">
-        <% if (error) { %>
-        <div class="alert alert-danger mt-2"><%= error %></div>
-        <% } %>
 
         <form
           method="POST"
@@ -44,7 +18,7 @@
           onsubmit="return validar();"
         >
           <!-- Campo oculto para passar o tipo de ação -->
-          <input type="hidden" name="type" value="<%= type %>" />
+          <input type="hidden" name="action_type" value="<%= action_type %>" />
 
           <label for="email">Digite o seu email acadêmico da UFC</label>
           <input
@@ -61,7 +35,6 @@
       </div>
     </main>
   </body>
-</html>
 
 <script>
   function validar() {
@@ -80,3 +53,5 @@
     return ok;
   }
 </script>
+
+<%- include('components/footer') %>

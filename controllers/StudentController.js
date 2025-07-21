@@ -6,7 +6,8 @@ class StudentHomeController {
     const chatResponse = req.session.chatResponse || null;
     const chats = req.session.chats || []; // Pega o histórico de chats da sessão
     res.render("student_home", {
-      error: null,
+      message: null,
+      type: null,
       title: "Home Estudante",
       userName: user.name,
       userEmail: user.email,
@@ -48,8 +49,9 @@ class StudentHomeController {
       const user = req.session.user;
 
       if (!userQuery || !token) {
-        return res.status(400).render("student_home", {
-          error: "Pergunta ou token ausente.",
+        return res.render("student_home", {
+          message: "Pergunta ou token ausente.",
+          type: "error",
           title: "Home Estudante",
           userName: user.name,
           userEmail: user.email,
@@ -98,7 +100,8 @@ class StudentHomeController {
 
       // Return the response
       res.render("chat_box", {
-        error: null,
+        message: null,
+        type: null,
         response: response,
         title: "Home Estudante - Chatbox",
         userName: user.name,
@@ -111,7 +114,8 @@ class StudentHomeController {
       const user = req.session.user;
       console.error("Erro ao enviar a pergunta:", error);
       res.render("student_home", {
-        error: "Erro interno. Tente novamente.",
+        message: "Erro interno. Tente novamente.",
+        type: "error",
         title: "Home Estudante",
         userName: user.name,
         userEmail: user.email,
@@ -186,7 +190,6 @@ class StudentHomeController {
   getChat(req, res) {
     try {
       const { id } = req.params;
-      const token = req.session.token;
       const user = req.session.user;
       const chats = req.session.chats || [];
 
@@ -194,7 +197,8 @@ class StudentHomeController {
 
       if (!chat) {
         return res.status(404).render("student_home", {
-          error: "Chat não encontrado.",
+          message: "Chat não encontrado.",
+          type: "error",
           title: "Home Estudante",
           userName: user.name,
           userEmail: user.email,
@@ -204,7 +208,8 @@ class StudentHomeController {
       }
 
       res.render("chat_box", {
-        error: null,
+        message: null,
+        type: null,
         title: "Home Estudante - Chatbox",
         userName: user.name,
         userEmail: user.email,
@@ -216,7 +221,8 @@ class StudentHomeController {
       const user = req.session.user;
       console.error("Erro ao carregar o chat:", error);
       res.render("student_home", {
-        error: "Erro interno ao carregar o chat.",
+        message: "Erro interno ao carregar o chat.",
+        type: "error",
         title: "Home Estudante",
         userName: user.name,
         userEmail: user.email,
@@ -237,7 +243,8 @@ class StudentHomeController {
 
       // Renderiza a página student_home sem erros e com os dados atualizados
       return res.render("student_home", {
-        error: null,
+        message: "Conversas apagadas com sucesso.",
+        type: "success",
         title: "Home Estudante",
         userName: user.name,
         userEmail: user.email,
@@ -251,7 +258,8 @@ class StudentHomeController {
       console.error("Erro ao apagar conversas:", error);
 
       return res.render("student_home", {
-        error: "Erro ao apagar conversas.",
+        message: "Erro ao apagar conversas.",
+        type: "error",
         title: "Home Estudante",
         userName: user.name,
         userEmail: user.email,
