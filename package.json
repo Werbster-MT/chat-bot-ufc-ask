@@ -4,7 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "npm run clean && npm run copy-assets",
+    "clean": "rimraf dist && mkdir dist",
+    "copy-assets": "xcopy public dist\\public /E /I /Y && xcopy views dist\\views /E /I /Y && xcopy config dist\\config /E /I /Y && xcopy middleware dist\\middleware /E /I /Y && xcopy models dist\\models /E /I /Y && xcopy routers dist\\routers /E /I /Y && xcopy services dist\\services /E /I /Y && xcopy uploads dist\\uploads /E /I /Y && copy index.js dist\\ && copy package.json dist\\",
+    "build:unix": "npm run clean:unix && npm run copy-assets:unix",
+    "clean:unix": "rm -rf dist && mkdir dist",
+    "copy-assets:unix": "cp -r public dist/ && cp -r views dist/ && cp -r config dist/ && cp -r middleware dist/ && cp -r models dist/ && cp -r routers dist/ && cp -r services dist/ && cp -r uploads dist/ && cp index.js dist/ && cp package.json dist/",
+    "prod": "cross-env NODE_ENV=production node index.js",
+    "prod:dev": "cross-env NODE_ENV=production nodemon index.js",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo",
+    "db:seed": "sequelize-cli db:seed:all",
+    "db:seed:undo": "sequelize-cli db:seed:undo:all",
+    "db:reset": "npm run db:migrate:undo && npm run db:migrate && npm run db:seed",
+    "install:prod": "npm ci --only=production",
+    "install:dev": "npm install",
+    "lint": "echo \"No linter configured\"",
+    "lint:fix": "echo \"No linter configured\"",
+    "check": "npm run lint && npm test"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +43,14 @@
     "nodemailer": "^7.0.3",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.3"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.0",
+    "rimraf": "^5.0.10"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   }
 }
