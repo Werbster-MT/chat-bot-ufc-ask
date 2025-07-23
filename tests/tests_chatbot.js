@@ -1,4 +1,5 @@
 const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const assert = require('assert');
 
 describe('Dashboard Page', function () {
@@ -8,8 +9,10 @@ describe('Dashboard Page', function () {
   this.timeout(60000);
 
   // Setup
+  const options = new chrome.Options();
+  options.addArguments('--start-maximized');
   before(async function () {
-    driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   });
 
   // Teardown
