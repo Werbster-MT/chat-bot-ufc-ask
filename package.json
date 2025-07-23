@@ -41,10 +41,12 @@
     "multer": "^2.0.2",
     "mysql2": "^3.14.1",
     "nodemailer": "^7.0.3",
+    "selenium-webdriver": "^4.34.0",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.3"
   },
   "devDependencies": {
+    "chromedriver": "^138.0.3",
     "cross-env": "^7.0.3",
     "nodemon": "^3.0.0",
     "rimraf": "^5.0.10"
@@ -52,5 +54,8 @@
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
+  },
+  "config": {
+    "chromedriver_version": "138.0.7204.158"
   }
 }
