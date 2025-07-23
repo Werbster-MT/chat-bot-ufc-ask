@@ -2,7 +2,7 @@ require("dotenv").config(); // Carregar as variáveis de ambiente
 
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 const session = require("express-session");
 const path = require("path");
 const fs = require('fs');
@@ -29,7 +29,7 @@ app.use(session({
 
 router(app);
 
-const sequelize = require('./config/database');
+const sequelize = require('./db/config');
 
 sequelize.sync({ force: false }).then(() => {
   console.log('Database & tables created!');
