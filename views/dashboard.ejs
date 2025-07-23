@@ -1,29 +1,185 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login</title>
+<%- include('components/header') %>
+  <body class="d-flex justify-content-center align-items-center">
+    <!-- Sidebar -->
+    <aside class="sidebar-container">
+      <%- include('components/sideBar.ejs') %>
+    </aside>
 
-    <!-- Bootstrap 5 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Inter Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Estilos customizados -->
-    <link rel="stylesheet" href="/assets/css/index.css" />
-  </head>
+    <main class="content p-4">
+      <div class="dashboard-container">
+        <h1 class="mb-4 text-start">Dashboard</h1>
+  
+        <!-- Formulário para Adicionar Novo Documento -->
+        <div class="mb-5">
+          <form
+            class="form-upload"
+            action="/addDocument"
+            method="POST"
+            enctype="multipart/form-data"
+            onsubmit="return validarEEnviar()"
+            novalidate
+          >
+            <div class="row d-flex flex-row justify-content-between align-items-center">
+              <div class="col-5 mb-3">
+                <label for="documentName">Link do Documento</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="documentLink"
+                  name="documentLink"
+                  placeholder="Exemplo: 'https://www.ufc.br/noticias/noticias-e-editais-de-concursos-e-selecoes'"
+                  required
+                />
+              </div>
+              <div class="col-2 d-flex justify-content-center align-items-center">
+                <p class="text-center m-0">ou</p>
+              </div>
+              <div class="col-5 mb-3 custom-file-button">
+                <label for="documentFile">Arquivo PDF</label>
+                <div class="input-file-wrapper d-flex align-items-center">
+                  <input
+                  type="file"
+                  class="form-control"
+                  id="documentFile"
+                  name="documentFile"
+                  accept=".pdf"
+                  required
+                />
+                <label for="documentFile">
+                  <i class="fa-solid fa-paperclip ms-3 attachment-icon"></i> <!-- Ícone de anexo -->
+                </label>
+                </div>
+              </div>
+            </div>
+  
+            <button type="submit" class="btn btn-success">
+              Adicionar
+            </button>
+          </form>
+        </div>
+  
+        <!-- Tabela de Uploads -->
+        <table id="example" class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th>Ações</th>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Data de Inserção</th>
+              <th>Usuário</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (sources && sources.length > 0) { %>
+              <% sources.forEach(source => { %>
+                <tr>
+                  <td class="text-center">
+                    <button 
+                      type="button" 
+                      class="btn btn delete-document" 
+                      title="excluir documento"
+                      data-source="<%= source.source || source.name %>"
+                      data-nome="<%= source.source || 'Documento' %>"
+                      onclick="confirmarExclusao(this.dataset.source, this.dataset.nome)"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                  <td><%= source.source || 'Documento' %></td>
+                  <td><%= source.tipo || 'Documento' %></td>
+                  <td>
+                    <% if (source.insertion_time) { %>
+                      <%= source.insertion_time %>
+                    <% } else if (source.data_insercao) { %>
+                      <%= source.data_insercao %>
+                    <% } else if (source.data_adicao) { %>
+                      <%= source.data_adicao %>
+                    <% } else { %>
+                      N/A
+                    <% } %>
+                  </td>
+                  <td><%= source.user || userName %></td>
+                </tr>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </main>
 
-  <body class="d-flex justify-content-center align-items-center min-vh-100">
-    <div class="text-center">
-      <h1 class="mb-4 title-gradient">
-        <span>UFC ASK</span>
-      </h1>
-    </div>
+    <!-- Scripts do DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script>
+
+      $(document).ready(function () {
+        $("#example").DataTable({
+          order: [[3, "desc"]],
+          pageLength: 5, // Número de itens por página
+          language: {
+            url: "/assets/js/datatables/Portuguese.json", // Caminho local para o arquivo
+          },
+        });
+      });
+
+      function validar() {  
+        let link = window.document.getElementById('documentLink');
+        let pdf = window.document.getElementById('documentFile');
+        let ok = true;
+
+        if (!link.value && !pdf.value) {
+          SwalCustom.error('Campo obrigatório', 'Preencha um dos campos (link ou arquivo PDF)');
+          ok = false;
+        }
+        if (((link.value || pdf.value) && (link.value && pdf.value))) {
+          SwalCustom.warning('Seleção inválida', 'Selecione apenas um link ou um PDF, não ambos');
+          ok = false;
+        }
+        
+        return ok;
+      }
+
+      function validarEEnviar() {
+        if (validar()) {
+          SwalCustom.loading('Adicionando documento...');
+          return true;
+        }
+        return false;
+      }
+
+      function confirmarExclusao(source, nomeDocumento) {
+        SwalCustom.deleteConfirm(nomeDocumento, function(confirmed) {
+          if (confirmed) {
+            SwalCustom.loading('Excluindo documento...');
+            
+            // Criar formulário dinâmico para enviar a requisição
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/delete/by-source';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'source';
+            input.value = source;
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+          }
+        });
+      }
+
+      // Função para mostrar sucesso na adição de documento
+      function mostrarSucessoAdicao() {
+        SwalCustom.success('Documento adicionado!', 'O documento foi adicionado com sucesso à base de conhecimento.');
+      }
+
+      // Função para mostrar erro na adição de documento
+      function mostrarErroAdicao(mensagem) {
+        SwalCustom.error('Erro ao adicionar documento', mensagem || 'Ocorreu um erro ao adicionar o documento. Tente novamente.');
+      }
+
+    </script>
   </body>
-</html>
+
+<%- include('components/footer') %>

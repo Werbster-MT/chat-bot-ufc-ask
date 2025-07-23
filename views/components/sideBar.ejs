@@ -1,0 +1,65 @@
+<div class="sidebar">
+  <%- include('./userCard', { 
+    userName: userName,      // Recebendo o nome do usuário
+    userEmail: userEmail     // Recebendo o e-mail do usuário
+  }) %>
+
+  <div class="mt-3 w-100">
+    <% if (userRole == 'admin') { %>
+        <%- include('./sideBarButton', { iconPath: `/assets/imgs/dashboard.svg`, buttonText: 'Dashboard', method: 'get', action: '/dashboard' }) %>
+    <%} else {%>
+        <!-- Percorrer sobre os chats salvos via session para preencher os links -->
+        <% if (chats) {%>
+          <% chats.forEach(chat => { %>
+            <%- include('./sideBarButton', { iconPath: `/assets/imgs/chat_bubble.svg`, buttonText: chat.name, method: 'get', action: '/chat/' + chat.id }) %>
+          <% }); %>
+        <% } %>
+        <!-- Fim -->
+
+        <form method="get" action="/studentHomePage" class="w-100" id="newQuestionForm">
+            <button type="submit" class="btn new-chat w-100"><i class="fa-solid fa-plus"></i> Iniciar nova conversa</button>
+        </form>
+    <% } %>
+  </div>
+
+  <div class="mt-auto w-100">
+    <hr class="my-3 w-100" />
+    <% if (userRole == 'estudante') { %>
+        <%- include('./sideBarButton', { iconPath: `/assets/imgs/delete.svg`, buttonText: 'Apagar Conversas',  method: 'post', action: '/deleteChats', id: 'del_chats' }) %>
+    <% } %>
+    <%- include('./sideBarButton', { iconPath: `/assets/imgs/logOff.svg`, buttonText: 'Sair', textColor: '#FF5555',  method: 'get', action: '/logout/'}) %>
+  </div>
+</div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- SweetAlert2 Custom -->
+<script src="/assets/js/sweetalert-custom.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("del_chats");
+    if (form) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        confirmarExclusaoConversas();
+      });
+    }
+  });
+
+  function confirmarExclusaoConversas() {
+    SwalCustom.deleteConversations(function(confirmed) {
+      if (confirmed) {
+        SwalCustom.loading('Apagando conversas...');
+        
+        // Criar formulário dinâmico para enviar a requisição
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/deleteChats';
+        
+        document.body.appendChild(form);
+        form.submit();
+      }
+    });
+  }
+</script>

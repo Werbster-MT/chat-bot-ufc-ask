@@ -1,0 +1,25 @@
+<%- include('components/header') %>
+
+  <body class="d-flex justify-content-center align-items-center min-vh-100">
+    <main class="text-center main-login">
+      <div class="logo-container d-flex flex-row justify-content-center align-items-center mb-4 ">
+        <h1 class="title-gradient">
+          <span>UFC ASK</span>
+        </h1>
+        <img class="ms-3" src="/assets/imgs/small_ufc_logo.png" alt="Logo UFC" class="ufc-logo">
+      </div>
+
+      <div class="login-box mx-auto">
+
+        <form method="POST" action="/sign-in" class="d-grid gap-3">
+          <label for="ok" class="fw-bold">Um código foi enviado ao seu email</label>
+
+          <button name="ok" type="submit" class="mt-4 btn text-white fw-bold">
+            Próximo
+          </button>
+        </form>
+      </div>
+    </main>
+  </body>
+
+<%- include('components/footer') %>

@@ -1,0 +1,43 @@
+<%- include('components/header') %>
+
+  <body>
+    <!-- Incluindo a sidebar -->
+    <aside class="sidebar-container">
+      <%- include('components/sideBar.ejs') %>
+    </aside>
+
+    <main class="content main-home d-flex flex-column justify-content-center align-items-center">
+      <div class="new-ask-container w-100">
+        <div class="text-center mb-5 w-100">
+          <h1 class="mb-2 wrap-title">
+            Bem Vindo ao <span class="title-gradient">UFC ASK</span>
+          </h1>
+          <p class="fst-italic chat-desc">
+            Seu assistente inteligente para tirar dúvidas sobre a UFC.<br />Pergunte
+            sobre editais, matrículas, calendário acadêmico e muito mais!
+          </p>
+        </div>
+  
+        <div class="d-grid gap-3">
+          <div class="p-2"></div>
+          <div class="p-2"></div>
+        </div>
+  
+        <!-- Formulário de Pergunta do Usuário -->
+        <form action="/chatBox" method="POST" class="text-center w-100">
+          <div class="user-query d-flex flex-row justify-content-center">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Exemplo: 'Como faço para me matricular em uma disciplina?'"
+              id="userQuery"
+              name="userQuery"
+            />
+            <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </form>
+      </div>  
+    </main>
+  </body>
+
+<%- include('components/footer') %>

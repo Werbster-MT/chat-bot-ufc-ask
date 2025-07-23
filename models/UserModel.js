@@ -1,4 +1,4 @@
-// models/LoginModel.js
+// models/UserModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
@@ -22,8 +22,8 @@ const User = sequelize.define("User", {
     allowNull: false,
   },
   role: {
-    type: DataTypes.ENUM('student', 'admin'),
-    defaultValue: 'student',
+    type: DataTypes.ENUM('estudante', 'admin'),
+    defaultValue: 'estudante',
   },
   createdAt: {
    field: 'created_at',
@@ -42,4 +42,9 @@ const User = sequelize.define("User", {
   timestamps: false,
 });
 
-module.exports = User;
+const userRoles = {
+  ADMIN: 'admin',
+  ESTUDANTE: 'estudante'
+}
+
+module.exports = { User, userRoles };

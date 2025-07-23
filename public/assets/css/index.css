@@ -1,51 +1,319 @@
-/* Project Palette */
+/* ========================================
+   VARIÁVEIS CSS E PALETA DE CORES
+   ======================================== */
 :root {
-  --color-background: #222;
+  /* Cores principais */
+  --color-background: #121212;
   --color-foreground: #e5e5e5;
-  --color-border: rgba(255, 255, 255, 0.15);
-  --color-box-bg: radial-gradient(circle at bottom right, rgba(9, 126, 77, 0.1), #000 80%);
-  --color-input-bg: #1e1e1e;
-  --color-input-border: #444;
-  --color-input-placeholder: #888;
   --color-white: #ffffff;
+  
+  /* Cores de fundo */
+  --color-box-bg: #181818a1;
+  --color-input-bg: #1e1e1e;
+  --color-sidebar-bg: #222;
+  --color-card-bg: #2e2e2e;
+  --color-table-header: #1a1a1a;
+  --color-table-row-even: #2e2e2e;
+  --color-table-row-hover: #1a1a1a;
+  
+  /* Cores de borda */
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-input-border: #444;
+  
+  /* Cores de texto */
+  --color-input-placeholder: #888;
   --color-link: #aaa;
   --color-link-hover: #fff;
-
-  --color-primary: #087C4B;
+  --color-text-muted: #B0B0B0;
+  --color-text-secondary: #e5e5e54c;
+  
+  /* Cores primárias */
+  --color-primary: #019a5acc;
   --color-primary-hover: #0bbf6a;
-
+  --color-primary-light: rgba(9, 127, 77, 0.5);
+  --color-primary-dark: rgba(9, 127, 77, 0);
+  
+  /* Cores de estado */
+  --color-danger: #FF000080;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+  
+  /* Cores de loading */
+  --color-loading: #888;
+  
+  /* Cores de sombra */
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-shadow-light: rgba(0, 0, 0, 0.07);
+  --color-shadow-medium: rgba(0, 0, 0, 0.3);
+  
+  /* Gradientes */
   --gradient-title: linear-gradient(90deg, var(--color-primary) 0%, var(--color-background) 100%);
+  --gradient-primary: linear-gradient(90deg, var(--color-primary-light) 0%, var(--color-primary-dark) 100%);
+  
+  /* Opacidades */
+  --opacity-light: 0.05;
+  --opacity-medium: 0.8;
+  --opacity-heavy: 0.1;
+}
+
+/* ========================================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ======================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
   color: var(--color-foreground);
-  position: relative;
-  flex-shrink: 0;
   border: 1px solid var(--color-border);
   background: var(--color-background);
+  overflow-x: hidden;
+  background-image: url("../imgs/gradient_brackgound_login.png");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+}
+
+/* ========================================
+   PÁGINA DE LOGIN
+   ======================================== */
+.main-login::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../imgs/logo_ufc.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
+  opacity: 0.06;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ========================================
+   CONTAINERS PRINCIPAIS E LOGO DE FUNDO
+   ======================================== */
+.new-ask-container, .dashboard-container, .user-perfil-container {
+  /* Container para o conteúdo principal */
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  width: 100%;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-image: url("../imgs/logo_ufc.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30%;
+  opacity: 0.06;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ========================================
+   COMPONENTES DE FORMULÁRIO
+   ======================================== */
+.cadastro {
+  display: flex;
+  flex-direction: column;
+  width: 583px;
+  height: 404px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 34px 47px;
+  position: relative;
+  background-color: var(--color-box-bg);
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.cadastro .entrada-de-email {
+  z-index: 3;
+  position: relative;
+  width: 506px;
+  height: 56px;
+  margin-left: -8.50px;
+  margin-right: -8.50px;
+}
+
+.cadastro .frame {
+  position: relative;
+  height: 56px;
+  background-color: #ffffff0d;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+  backdrop-filter: blur(16px) brightness(100%);
+  -webkit-backdrop-filter: blur(16px) brightness(100%);
+}
+
+.cadastro .frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 10px;
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.24) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cadastro .text-wrapper {
+  position: absolute;
+  width: 447px;
+  top: 15px;
+  left: 14px;
+  font-family: "Inter-Medium", Helvetica;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24.8px;
+  white-space: nowrap;
+}
+
+.cadastro .entrada-de-senha {
+  z-index: 2;
+  position: relative;
+  width: 506px;
+  height: 56px;
+  margin-left: -8.50px;
+  margin-right: -8.50px;
+}
+
+.cadastro .logar {
+  display: flex;
+  width: 320px;
+  height: 57px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+}
+
+.cadastro .div {
+  position: relative;
+  width: 243px;
+  margin-top: -5.50px;
+  margin-bottom: -3.50px;
+  font-family: "Jersey 20-Regular", Helvetica;
+  font-weight: 400;
+  color: var(--color-foreground);
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 42px;
+}
+
+.cadastro .opcoes {
+  flex-direction: column;
+  width: 202px;
+  height: 83px;
+  gap: 1px;
+  z-index: 0;
+  background-color: rgba(18, 14, 14, 0.5);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cadastro .div-wrapper {
+  width: 250px;
+  height: 36px;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-left: -24.00px;
+  margin-right: -24.00px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 4px var(--color-shadow-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cadastro .text-wrapper-2 {
+  position: relative;
+  width: fit-content;
+  margin-top: -7.00px;
+  margin-bottom: -5.00px;
+  font-family: "Inter-Italic", Helvetica;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-foreground);
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+/* ========================================
+   TÍTULOS E TEXTOS
+   ======================================== */
+.wrap-title {
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 1.92px;
+  padding: 10px 16px 10px 6px;
+}
+
+.chat-desc {
+  color: var(--color-input-placeholder);
 }
 
 .title-gradient {
   display: inline-block;
-  font-size: 48px;
-  font-weight: 600;
-  letter-spacing: 1.92px;
-  padding: 12px 28px;
-  border-radius: 6px;
-  background: var(--gradient-title);
+  background: var(--gradient-primary);
   color: var(--color-white);
+  font-size: 48px;
+  margin-bottom: 0;
 }
 
+.logo-container > img {
+  display: none;
+}
+
+/* ========================================
+   LOGIN BOX
+   ======================================== */
 .login-box {
-  background: var(--color-box-bg);
-  padding: 40px;
+  background-color: var(--color-box-bg);
+  padding: 30px;
   border-radius: 16px;
   width: 483px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
 }
 
 .login-box .form-control {
@@ -86,4 +354,710 @@ body {
 
 .login-box .small a:hover {
   color: var(--color-link-hover);
+}
+
+/* ========================================
+   COMPONENTES DE USUÁRIO
+   ======================================== */
+/* Estilo do container do usuário */
+.user-box {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, var(--opacity-light));
+  width: 100%;
+  height: 69px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Estilo do círculo onde o ícone ficará */
+.circle {
+  background-color: var(--color-primary);  /* Cor do círculo */
+  border-radius: 50%;
+  width: 40px;  /* Largura do círculo */
+  height: 40px; /* Altura do círculo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Garante que o ícone se encaixe bem no círculo */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.circle:hover {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.02);
+}
+
+/* Estilo do ícone dentro do círculo */
+.circle i {
+  color: var(--color-white); /* Cor do ícone dentro do círculo */
+  font-size: 20px; /* Ajuste o tamanho do ícone */
+}
+
+/* Estilos do Perfil */
+.perfil-box {
+  background-color: var(--color-box-bg);
+  border-radius: 8px 8px;
+  padding: 20px; 
+  width: 500px;
+}
+
+/* Ajuste na div do ícone para que ela acompanhe o tamanho do ícone */
+.perfil-icon {
+  display: flex; /* Isso faz com que a div acompanhe o tamanho do conteúdo */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilo do ícone dentro da div */
+.perfil-icon i {
+  font-size: 150px; /* Ajuste o tamanho do ícone aqui */
+  color: var(--color-white);
+  width: auto; /* Garante que o ícone não ultrapasse os limites da div */
+  height: auto; /* Garante que a altura do ícone não ultrapasse a div */
+}
+
+.perfil-email p {
+  color: var(--color-input-placeholder);
+}
+
+.btn-perfil a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+} 
+
+/* Card do Perfil */
+.rename-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  margin: 0 auto; 
+}
+
+/* Estilo do input */
+.rename-user .form-control {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  color: var(--color-white);
+  border-radius: 8px 0 0 8px; 
+  font-size: 14px;
+}
+
+.rename-user .form-control::placeholder {
+  color: var(--color-input-placeholder)
+} 
+
+/* Estilo do botão */
+.rename-user button {
+  padding: 10px 24px;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 0 8px 8px 0; 
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* Estilo do botão ao passar o mouse */
+.rename-user button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.delete-account, .delete-document {
+  color: var(--color-white);  /* Deixa o ícone da lixeira vermelho */
+  border: none;  
+  background: none;  
+  border-radius: 50%;  
+  transition: color 0.3s ease, transform 0.2s ease;  
+  padding: 0 !important;
+}
+
+.delete-account:hover, .delete-document:hover {
+  color: var(--color-danger);
+  transform: scale(1.1);  
+}
+
+/* Estilo do ícone de anexo */
+.attachment-icon {
+  color: var(--color-white);
+  transition: color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.attachment-icon:hover {
+  color: var(--color-success); /* Verde */
+  transform: scale(1.1);
+}
+
+/* Estilo do nome do usuário */
+.user-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--color-white);
+}
+
+/* Estilo do email do usuário */
+.email-title {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.new-chat {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.new-chat:hover {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.02);
+}
+
+/* ========================================
+   SIDEBAR
+   ======================================== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  border-right: 1px solid var(--color-border);
+  background: var(--color-sidebar-bg);
+  color: var(--color-white);
+  z-index: 1000;
+}
+
+/* ========================================
+   CONTENT (ÁREA PRINCIPAL)
+   ======================================== */
+.content {
+  margin-left: 280px;
+  /* espaço da sidebar */
+  padding: 32px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.theme-button {
+  display: flex;
+  width: 100%;
+  padding: 12px 16px;
+  align-items: center;
+  gap: 12px;
+
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-sidebar-bg);
+  color: var(--color-foreground);
+  box-shadow: 0px 0px 4px 0px var(--color-shadow-light);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  cursor: pointer;
+}
+
+.theme-button:hover {
+  background-color: var(--color-card-bg);
+}
+
+.theme-button img {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================
+   CHAT E INPUTS
+   ======================================== */
+/* Estilo do contêiner do input e botão */
+.user-query {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  margin: 0 auto; /* Centraliza o contêiner */
+}
+
+/* Estilo do input */
+.user-query .form-control {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  color: var(--color-white);
+  border-radius: 8px 0 0 8px; /* Bordas arredondadas no lado esquerdo */
+  font-size: 14px;
+}
+
+.user-query .form-control::placeholder {
+  color: var(--color-input-placeholder)
+}
+
+/* Estilo do botão */
+.user-query button {
+  padding: 10px 24px;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 0 8px 8px 0; /* Bordas arredondadas no lado direito */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0; /* Garante que o botão não encolha */
+  display: inline-block; /* Garante que o botão tenha um comportamento de bloco */
+}
+
+/* Estilo do botão ao passar o mouse */
+.user-query button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* Estilo do botão quando desabilitado */
+.user-query button:disabled {
+  background-color: var(--color-input-placeholder);
+  cursor: not-allowed;
+  opacity: var(--opacity-medium);
+}
+
+/* ========================================
+   CONVERSATION BOX
+   ======================================== */
+/* ChatBox */
+.content.main-chatbox {
+  min-height: 100vh;
+  height: auto;
+  flex: 1;
+}
+
+.conversation-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  width: 100%;
+}
+
+.chat-label {
+  color: var(--color-input-placeholder);
+}
+
+.chat-bubble {
+  max-width: 70%;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1;
+  word-wrap: break-word;
+  background-color: var(--color-input-bg);
+  box-shadow: 0px 0px 6px var(--color-shadow);
+}
+
+.user-message {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  align-self: flex-end;
+  border-bottom-right-radius: 0;
+}
+
+.bot-response {
+  background-color: var(--color-card-bg);
+  color: var(--color-white);
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
+}
+
+/* ========================================
+   FORMULÁRIOS DE UPLOAD
+   ======================================== */
+/* Estilo do formulário de upload */
+.form-upload {
+  background-color: var(--color-box-bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px var(--color-shadow-medium);
+}
+
+.form-upload label {
+  color: var(--color-white);
+}
+
+.form-upload .form-control {
+  background-color: var(--color-background);
+  color: var(--color-input-placeholder);
+  border: 1px solid var(--color-input-border);
+  border-radius: 8px;
+}
+
+.form-upload button {
+  background-color: var(--color-primary);
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.form-upload button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+#documentLink::placeholder {
+  color: var(--color-input-placeholder);
+  text-overflow: ellipsis !important;
+}
+
+/* Custom file input */
+.custom-file-button input[type=file] {
+  margin-left: -2px !important;
+}
+
+.custom-file-button input[type=file]::-webkit-file-upload-button {
+  display: none;
+}
+
+.custom-file-button input[type=file]::file-selector-button {
+  display: none;
+}
+
+.custom-file-button:hover label {
+  cursor: pointer;
+}
+
+/* ========================================
+   TABELAS E DATATABLES
+   ======================================== */
+/* Estilo da tabela com DataTables */
+#example-wrapper {
+  color: var(--color-white) !important;
+}
+
+table.dataTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.dataTable th, table.dataTable td {
+  padding: 10px;
+  text-align: left;
+}
+
+table.dataTable th {
+  background-color: var(--color-table-header);
+  color: var(--color-white);
+}
+
+table.dataTable tbody tr:nth-child(even) {
+  background-color: var(--color-table-row-even);
+}
+
+table.dataTable tbody tr:hover {
+  background-color: var(--color-table-row-hover);
+}
+
+table.dataTable .dataTables_length {
+  color: var(--color-white);
+}
+
+table.dataTable .dataTables_info {
+  color: var(--color-white);
+}
+
+table.dataTable .dataTables_paginate {
+  color: var(--color-white);
+}
+
+
+/* Estilizando o campo de busca */
+.dataTables_length, .dataTables_filter {
+  margin-bottom: 20px;
+}
+
+.dataTables_length label, .dataTables_filter label{
+  height: 33px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.dataTables_filter input {
+  color: var(--color-white); /* Cor do texto dentro da pesquisa */
+  background-color: var(--color-input-bg) !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+/* Estilizando o select de resultados por página */
+.dataTables_length select {
+  color: var(--color-white); 
+  background-color: var(--color-input-bg) !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0 5px 0 5px !important;
+}
+
+.dataTables_length select option {
+  color: var(--color-white);
+}
+
+/* ========================================
+   HEADER E LOGO
+   ======================================== */
+/* Header com Logo */
+.header-container {
+  position: fixed;
+  top: -10px;
+  right: -10px;
+  z-index: 1000;
+  padding: 20px;
+  pointer-events: none; /* Permite clicar através do header */
+}
+
+/* Página Home */
+.content.main-home {
+  min-height: 100vh;
+  padding-top: 100px; /* Espaço para o header */
+}
+
+/* Ajuste para o chat */
+.content.main-chatbox {
+  padding-top: 20px; /* Menos espaço no chat */
+}
+
+.header-logo {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ufc-logo {
+  width: 40px;
+  height: auto;
+  opacity: 0.8;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  transition: opacity 0.3s ease;
+}
+
+.ufc-logo:hover {
+  opacity: 1;
+}
+
+/* ========================================
+   ANIMAÇÕES E LOADING
+   ======================================== */
+/* Loading Animation */
+.loading-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-loading);
+  animation: loading-dots 1.4s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes loading-dots {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   SWEETALERT2 PERSONALIZADO
+   ======================================== */
+.swal2-popup {
+  background-color: var(--color-box-bg) !important;
+  color: var(--color-foreground) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.swal2-title {
+  color: var(--color-white) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.swal2-html-container {
+  color: var(--color-foreground) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.swal2-confirm {
+  background-color: var(--color-primary) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: var(--color-white) !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+  background-color: var(--color-primary-hover) !important;
+  transform: scale(1.02) !important;
+}
+
+.swal2-cancel {
+  background-color: var(--color-card-bg) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  color: var(--color-foreground) !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-cancel:hover {
+  background-color: var(--color-input-bg) !important;
+  transform: scale(1.02) !important;
+}
+
+.swal2-input {
+  background-color: var(--color-input-bg) !important;
+  border: 1px solid var(--color-input-border) !important;
+  border-radius: 8px !important;
+  color: var(--color-white) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.swal2-input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(1, 154, 90, 0.2) !important;
+}
+
+.swal2-input::placeholder {
+  color: var(--color-input-placeholder) !important;
+}
+
+.swal2-icon {
+  border-color: var(--color-primary) !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: var(--color-success) !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: var(--color-danger) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--color-warning) !important;
+}
+
+.swal2-icon.swal2-info {
+  border-color: var(--color-info) !important;
+}
+
+/* ========================================
+   ESTILOS PARA TOASTS
+   ======================================== */
+.toast {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+}
+
+.toast-header {
+  background: var(--color-box-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.toast-success {
+  border-left: 5px solid var(--color-success);
+}
+
+.toast-error {
+  border-left: 5px solid var(--color-danger);
+}
+
+.toast-warning {
+  border-left: 5px solid var(--color-warning);
+}
+
+.toast .btn-close {
+  filter: invert(1);
+}
+
+.toast .btn-close:hover {
+  filter: invert(1) brightness(0.8);
+}
+
+.toast-container-custom {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1080;
+  min-width: 350px;
+  max-width: 400px;
+  pointer-events: none; /* permite clicar em elementos atrás do toast */
+}
+
+.toast {
+  pointer-events: auto; /* permite fechar o toast */
+}
+
+.toast-header #toast-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px #0008;
+  letter-spacing: 0.5px;
 }

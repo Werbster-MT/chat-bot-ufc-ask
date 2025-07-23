@@ -1,0 +1,57 @@
+<%- include('components/header') %>
+
+  <body class="d-flex justify-content-center align-items-center min-vh-100">
+    <main class="text-center main-login">
+      <div class="logo-container d-flex flex-row justify-content-center align-items-center mb-4 ">
+        <h1 class="title-gradient">
+          <span>UFC ASK</span>
+        </h1>
+        <img class="ms-3" src="/assets/imgs/small_ufc_logo.png" alt="Logo UFC" class="ufc-logo">
+      </div>
+
+      <div class="login-box mx-auto">
+
+        <form
+          method="POST"
+          action="/send-code"
+          class="d-grid gap-3"
+          onsubmit="return validar();"
+        >
+          <!-- Campo oculto para passar o tipo de ação -->
+          <input type="hidden" name="action_type" value="<%= action_type %>" />
+
+          <label for="email">Digite o seu email acadêmico da UFC</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="form-control"
+            placeholder="Email Acadêmico"
+            required
+          />
+
+          <button type="submit" class="btn text-white fw-bold">Próximo</button>
+        </form>
+      </div>
+    </main>
+  </body>
+
+<script>
+  function validar() {
+    let email = window.document.getElementById("email").value;
+    var ok = true;
+
+    // Verificar se o email contém '@alu.ufc.br'
+    const regex = /^[a-zA-Z0-9._%+-]+@alu\.ufc\.br$/;
+
+    if (!regex.test(email)) {
+      alert("Por favor, insira um email válido com @alu.ufc.br");
+      ok = false;
+    }
+
+    // Se passar na validação, retornar true
+    return ok;
+  }
+</script>
+
+<%- include('components/footer') %>
