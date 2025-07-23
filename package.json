@@ -9,7 +9,7 @@
     "start": "node index.js",
     "build": "npm run clean && npm run copy-assets",
     "clean": "rm -rf dist && mkdir dist",
-    "copy-assets": "cp -r public dist/ && cp -r views dist/ && cp -r config dist/ && cp -r middleware dist/ && cp -r models dist/ && cp -r routers dist/ && cp -r services dist/ && cp -r uploads dist/ && cp index.js dist/ && cp package.json dist/",
+    "copy-assets": "cp -r public dist/ && cp -r views dist/ && cp -r config dist/ && cp -r middleware dist/ && cp -r models dist/ && cp -r routers dist/ && cp -r services dist/ && cp index.js dist/ && cp package.json dist/",
     "prod": "cross-env NODE_ENV=production node index.js",
     "prod:dev": "cross-env NODE_ENV=production nodemon index.js",
     "db:migrate": "sequelize-cli db:migrate",
