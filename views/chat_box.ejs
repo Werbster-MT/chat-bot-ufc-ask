@@ -1,6 +1,8 @@
 <%- include('components/header') %>
 
   <body>
+    <%- include('components/logo.ejs') %>
+
     <aside class="sidebar-container">
       <%- include('components/sideBar.ejs') %>
     </aside>
@@ -33,7 +35,7 @@
       <form
         action="/ask"
         method="POST"
-        class="d-flex justify-content-center align-items-center p-0 mt-4"
+        class="d-flex justify-content-center align-items-center p-0 mt-5"
         id="chatForm"
         return="sendQuestion()"
       >
@@ -102,6 +104,7 @@
             </div>
           `;
           chatBox.appendChild(loadingMessage);
+          window.scrollTo(0, document.body.scrollHeight);
 
           // Limpa o input
           document.getElementById("userQuery").value = "";

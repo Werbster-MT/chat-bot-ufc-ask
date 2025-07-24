@@ -73,9 +73,9 @@ body {
   padding: 0;
   color: var(--color-foreground);
   border: 1px solid var(--color-border);
-  background: var(--color-background);
   overflow-x: hidden;
-  background-image: url("../imgs/gradient_brackgound_login.png");
+  /* background-image: url("../imgs/gradient_brackgound_login.png"); */
+  background: var(--color-sidebar-bg) !important;
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
@@ -120,7 +120,7 @@ body {
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background-image: url("../imgs/logo_ufc.png");
+  /* background-image: url("../imgs/logo_ufc.png"); */
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30%;
@@ -844,6 +844,23 @@ table.dataTable .dataTables_paginate {
   z-index: 1000;
   padding: 20px;
   pointer-events: none; /* Permite clicar através do header */
+}
+
+.img-logo {
+  position: fixed;
+  top: -10px;
+  right: -10px;
+  z-index: 1000;
+  padding: 20px;
+  pointer-events: none; /* Permite clicar através do header */
+}
+
+.img-logo img {
+  width: 40px;
+  height: auto;
+  opacity: 0.8;
+  filter: brightness(0) invert(1); /* Torna a logo branca */
+  transition: opacity 0.3s ease;
 }
 
 /* Página Home */

@@ -44,12 +44,12 @@
 
 6. **Run migrations:**
    ```bash
-   npx sequelize-cli db:migrate
+   npx sequelize-cli db:migrate --config db/config_cli.js
    ```
 
 7. **Seed an admin user (email: admin@ufc.br | senha: admin123):**
    ```bash
-   npx sequelize-cli db:seed:all
+   npx sequelize-cli db:seed:all --config db/config_cli.js
    ```
 
 8. **Start the server:**
