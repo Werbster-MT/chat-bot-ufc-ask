@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "build": "npm run clean && npm run copy-assets && npm run db:migrate && npm run db:seed",
+    "build": "npm ci --omit=dev && npm run clean && npm run copy-assets && npm run db:migrate && npm run db:seed",
     "clean": "rm -rf dist && mkdir dist",
     "copy-assets": "cp -r public dist/ && cp -r views dist/ && cp -r db dist/ && cp -r middleware dist/ && cp -r models dist/ && cp -r routers dist/ && cp -r services dist/ && cp index.js dist/ && cp package.json dist/",
     "prod": "cross-env NODE_ENV=production node index.js",
