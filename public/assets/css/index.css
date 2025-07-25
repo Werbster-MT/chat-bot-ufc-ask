@@ -60,75 +60,77 @@
 /* ========================================
    RESET E CONFIGURAÇÕES GLOBAIS
    ======================================== */
+html {
+  height: 100%;
+  background-color: var(--color-background);
+}
+
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
   color: var(--color-foreground);
+  min-height: 100%;
   border: 1px solid var(--color-border);
   overflow-x: hidden;
-  /* background-image: url("../imgs/gradient_brackgound_login.png"); */
-  background: var(--color-sidebar-bg) !important;
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: cover;
+  position: relative;
+  z-index: 0;
+  background-color: transparent; /* Importante para ver o fundo do html */
 }
 
-/* ========================================
-   PÁGINA DE LOGIN
-   ======================================== */
-.main-login::before {
+/* Pseudo-elemento para o gradiente de fundo FIXO */
+body::before {
   content: '';
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw; /* Garante a largura total da tela */
+  height: 100vh; /* Garante a altura total da tela */
+  background-image: url("../imgs/gradient_brackgound_login.png");
+  background-repeat: no-repeat;
+  background-position: bottom right; /* Ancora a imagem no canto inferior direito */
+  background-size: cover; /* Faz a imagem cobrir todo o espaço do pseudo-elemento */
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Pseudo-elemento para a logo de fundo FIXA */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url("../imgs/logo_ufc.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25%;
+  background-size: 30%;
   opacity: 0.06;
-  filter: brightness(0) invert(1); /* Torna a logo branca */
+  filter: brightness(0) invert(1);
   z-index: -1;
   pointer-events: none;
 }
 
 /* ========================================
-   CONTAINERS PRINCIPAIS E LOGO DE FUNDO
+   PÁGINA DE LOGIN
+   ======================================== */
+/* As regras .main-login::before e .content::before foram removidas */
+
+/* ========================================
+   CONTAINERS PRINCIPAIS
    ======================================== */
 .new-ask-container, .dashboard-container, .user-perfil-container {
-  /* Container para o conteúdo principal */
   position: relative;
   overflow: visible;
   max-width: 100%;
   width: 100%;
 }
 
-.content::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  /* background-image: url("../imgs/logo_ufc.png"); */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 30%;
-  opacity: 0.06;
-  filter: brightness(0) invert(1); /* Torna a logo branca */
-  z-index: -1;
-  pointer-events: none;
-}
 
 /* ========================================
    COMPONENTES DE FORMULÁRIO
@@ -400,7 +402,7 @@ body {
 .perfil-box {
   background-color: var(--color-box-bg);
   border-radius: 8px 8px;
-  padding: 20px; 
+  padding: 20px;
   width: 500px;
 }
 
@@ -430,7 +432,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
-} 
+}
 
 /* Card do Perfil */
 .rename-user {
@@ -438,7 +440,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 60%;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 /* Estilo do input */
@@ -448,20 +450,20 @@ body {
   background-color: var(--color-input-bg);
   border: 1px solid var(--color-input-border);
   color: var(--color-white);
-  border-radius: 8px 0 0 8px; 
+  border-radius: 8px 0 0 8px;
   font-size: 14px;
 }
 
 .rename-user .form-control::placeholder {
   color: var(--color-input-placeholder)
-} 
+}
 
 /* Estilo do botão */
 .rename-user button {
   padding: 10px 24px;
   background-color: var(--color-primary);
   border: none;
-  border-radius: 0 8px 8px 0; 
+  border-radius: 0 8px 8px 0;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -476,16 +478,16 @@ body {
 
 .delete-account, .delete-document {
   color: var(--color-white);  /* Deixa o ícone da lixeira vermelho */
-  border: none;  
-  background: none;  
-  border-radius: 50%;  
-  transition: color 0.3s ease, transform 0.2s ease;  
+  border: none;
+  background: none;
+  border-radius: 50%;
+  transition: color 0.3s ease, transform 0.2s ease;
   padding: 0 !important;
 }
 
 .delete-account:hover, .delete-document:hover {
   color: var(--color-danger);
-  transform: scale(1.1);  
+  transform: scale(1.1);
 }
 
 /* Estilo do ícone de anexo */
@@ -822,7 +824,7 @@ table.dataTable .dataTables_paginate {
 
 /* Estilizando o select de resultados por página */
 .dataTables_length select {
-  color: var(--color-white); 
+  color: var(--color-white);
   background-color: var(--color-input-bg) !important;
   border: none !important;
   outline: none !important;
@@ -848,23 +850,6 @@ table.dataTable .dataTables_paginate {
   z-index: 1000;
   padding: 20px;
   pointer-events: none; /* Permite clicar através do header */
-}
-
-.img-logo {
-  position: fixed;
-  top: -10px;
-  right: -10px;
-  z-index: 1000;
-  padding: 20px;
-  pointer-events: none; /* Permite clicar através do header */
-}
-
-.img-logo img {
-  width: 40px;
-  height: auto;
-  opacity: 0.8;
-  filter: brightness(0) invert(1); /* Torna a logo branca */
-  transition: opacity 0.3s ease;
 }
 
 /* Página Home */
@@ -1081,4 +1066,15 @@ table.dataTable .dataTables_paginate {
   color: #fff;
   text-shadow: 0 1px 2px #0008;
   letter-spacing: 0.5px;
+}
+
+/* ========================================
+   AJUSTE POSIÇÃO DA LOGO EM PÁGINAS INTERNAS
+   ======================================== */
+body.app-page::after {
+  /* A largura da sidebar é 280px.
+     Metade disso é 140px.
+     Calculamos 50% da tela e adicionamos 140px para re-centralizar no conteúdo. */
+  background-position: calc(50% + 140px) center;
+  background-size: 25%; /* Reduz um pouco o tamanho para se ajustar melhor ao espaço */
 }

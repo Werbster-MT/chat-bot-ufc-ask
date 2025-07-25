@@ -1,8 +1,6 @@
 <%- include('components/header') %>
 
-  <body>
-    <%- include('components/logo.ejs') %>
-
+  <body class="app-page">
     <aside class="sidebar-container">
       <%- include('components/sideBar.ejs') %>
     </aside>
@@ -10,20 +8,19 @@
     <main
       class="content main-chatbox p-4 d-flex flex-column justify-content-between"
     >
-      <!-- Exibindo a resposta -->
       <div class="conversation-box">
         <% chat.history.forEach(message => { %>
-        <!-- Pergunta do usuário -->
         <div class="chat-box-user-wrap d-flex flex-column align-items-end">
+
           <span class="chat-label mb-1">Você</span>
           <div class="chat-bubble user-message">
             <p class="mb-0"><%= message.question %></p>
           </div>
         </div>
 
-        <!-- Resposta da IA -->
         <div class="chat-box-ia-wrap d-flex flex-column align-items-start">
           <span class="chat-label mb-1">IA</span>
+
           <div class="chat-bubble bot-response">
             <%- message.answer %>
           </div>
@@ -31,15 +28,15 @@
         <% }); %>
       </div>
 
-      <!-- Formulário de Pergunta do Usuário (Fixado no rodapé) -->
       <form
         action="/ask"
         method="POST"
-        class="d-flex justify-content-center align-items-center p-0 mt-5"
+        class="d-flex justify-content-center align-items-center p-0 mt-4"
         id="chatForm"
         return="sendQuestion()"
       >
         <div class="user-query d-flex flex-row justify-content-between w-100">
+
           <input type="hidden" name="chat_id" value="<%= chat.id %>" />
           <input
             type="text"
@@ -48,6 +45,7 @@
             id="userQuery"
             name="userQuery"
           />
+
           <button type="submit" class="btn btn-primary" id="submitBtn">
             <i class="fa-solid fa-arrow-right"></i>
           </button>
@@ -57,13 +55,44 @@
   </body>
 
   <script>
+    // SCRIPT PARA BUSCAR A RESPOSTA INICIAL
+    document.addEventListener("DOMContentLoaded", function () {
+      <% if (chat.needsInitialAnswer) { %>
+        const firstQuestion = "<%= chat.history[0].question.replace(/"/g, '\\"') %>";
+        const chatId = "<%= chat.id %>";
+        const iaBubble = document.querySelector(".bot-response");
+
+        if (iaBubble && iaBubble.innerText.trim() === "...") {
+          iaBubble.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+          fetch("/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userQuery: firstQuestion, chat_id: chatId }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.sucesso) {
+              iaBubble.innerHTML = data.answer;
+            } else {
+              iaBubble.innerHTML = "Desculpe, ocorreu um erro ao buscar a resposta.";
+            }
+          })
+          .catch(error => {
+            console.error("Erro ao buscar resposta inicial:", error);
+            iaBubble.innerHTML = "Desculpe, ocorreu um erro de comunicação.";
+          });
+        }
+      <% } %>
+    });
+
     // Envio da pergunta e exibição da resposta sem recarregar a página
     document
       .getElementById("chatForm")
       .addEventListener("submit", function (event) {
-        event.preventDefault(); // Impede o envio padrão do formulário
+        event.preventDefault();
         const userQuery = document.getElementById("userQuery").value;
-        const chat_id = document.querySelector('[name="chat_id"]').value; // Pega o chat_id
+        const chat_id = document.querySelector('[name="chat_id"]').value;
 
         if (userQuery.trim()) {
           // Desabilita o botão e mostra loading
@@ -71,8 +100,6 @@
           const originalContent = submitBtn.innerHTML;
           submitBtn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
           submitBtn.disabled = true;
-
-          // Adiciona a pergunta do usuário imediatamente
           const chatBox = document.querySelector(".conversation-box");
           const userMessage = document.createElement("div");
           userMessage.classList.add(
@@ -108,7 +135,6 @@
 
           // Limpa o input
           document.getElementById("userQuery").value = "";
-
           fetch("/ask", {
             method: "POST",
             headers: {
@@ -121,18 +147,20 @@
               if (data.sucesso) {
                 // Remove o loading e adiciona a resposta real
                 chatBox.removeChild(loadingMessage);
-                
-                // Resposta da IA
+
+
                 const iaMessage = document.createElement("div");
                 iaMessage.classList.add(
                   "chat-box-ia-wrap",
                   "d-flex",
                   "flex-column",
+
                   "align-items-start"
                 );
                 console.log(data.answer);
                 iaMessage.innerHTML = `
                   <span class="chat-label mb-1">IA</span>
+
                   <div class="chat-bubble bot-response">
                     <p class="mb-0">${data.answer}</p>
                   </div>
@@ -149,7 +177,8 @@
               chatBox.removeChild(loadingMessage);
               console.error("Erro:", error);
             })
-            .finally(() => {
+
+             .finally(() => {
               // Restaura o botão
               submitBtn.innerHTML = originalContent;
               submitBtn.disabled = false;

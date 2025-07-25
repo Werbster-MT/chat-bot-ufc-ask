@@ -46,76 +46,46 @@ class StudentHomeController {
   async createChat(req, res) {
     try {
       const { userQuery } = req.body;
-      const token = req.session.token;
       const user = req.session.user;
 
-      if (!userQuery || !token) {
+      if (!userQuery) {
         return res.render("student_home", {
-          message: "Pergunta ou token ausente.",
+          message: "A pergunta não pode estar vazia.",
           type: "error",
           title: "Home Estudante",
           userName: user.name,
           userEmail: user.email,
           userRole: user.role,
-          chatName: null,
           chats: req.session.chats || [],
         });
       }
 
-      // Send the question to API
-      const method = "POST";
-      const endpoint = "/ask";
-      const body = {
-        question: userQuery,
-      };
-      const response = await ApiService.consumirApi(
-        method,
-        endpoint,
-        body,
-        token
-      );
-
-      // Verificar se a resposta é válida
-      if (!response || response.sucesso === false) {
-        throw new Error("Erro ao obter resposta da API");
-      }
-
-      // Gera um ID único para o novo chat
       const chatId = new StudentHomeController().generateChatId();
       const chatName = new StudentHomeController().getChatName(userQuery);
 
-      // Armazena o novo chat na sessão
-      const { marked } = await import('marked');
-      response.answer = marked(response.answer);
+      // Cria o chat com um placeholder para a resposta da IA
       const newChat = {
         id: chatId,
         name: chatName,
         history: [
           {
             question: userQuery,
-            answer: response.answer || "Resposta não encontrada",
+            answer: "...", // Placeholder inicial
           },
         ],
+        needsInitialAnswer: true, // Flag para buscar a resposta inicial
       };
 
-      req.session.chats = req.session.chats || [];
-      req.session.chats.push(newChat); // Adiciona o novo chat ao histórico
+      if (!req.session.chats) {
+        req.session.chats = [];
+      }
+      req.session.chats.push(newChat);
 
-      // Return the response
-      res.render("chat_box", {
-        message: null,
-        type: null,
-        response: response,
-        title: "Home Estudante - Chatbox",
-        userName: user.name,
-        userEmail: user.email,
-        userRole: user.role,
-        chat: newChat,
-        chats: req.session.chats,
-      });
+      // Redireciona para a página de chat
+      res.redirect(`/chat/${chatId}`);
     } catch (error) {
       const user = req.session.user;
-      console.error("Erro ao enviar a pergunta:", error);
+      console.error("Erro ao criar o chat:", error);
       res.render("student_home", {
         message: "Erro interno. Tente novamente.",
         type: "error",
@@ -124,8 +94,7 @@ class StudentHomeController {
         userEmail: user.email,
         userRole: user.role,
         response: null,
-        chatName: null,
-        chats: req.session.chats,
+        chats: req.session.chats || [],
       });
     }
   }
@@ -135,7 +104,6 @@ class StudentHomeController {
       const { userQuery, chat_id } = req.body;
       const token = req.session.token;
 
-      // Verifica se a pergunta ou token estão ausentes
       if (!userQuery || !token || !chat_id) {
         return res.status(400).json({
           sucesso: false,
@@ -143,44 +111,41 @@ class StudentHomeController {
         });
       }
 
-      // Enviar a pergunta para a API
       const method = "POST";
       const endpoint = "/ask";
       const body = { question: userQuery };
-      const response = await ApiService.consumirApi(
-        method,
-        endpoint,
-        body,
-        token
-      );
+      const response = await ApiService.consumirApi(method, endpoint, body, token);
 
-      // Verificar se a resposta é válida
       if (!response || response.sucesso === false) {
         throw new Error("Erro ao obter resposta da API");
       }
 
-      // Buscar o chat armazenado na sessão pelo id
       const chat = req.session.chats.find((c) => c.id === chat_id);
       if (!chat) {
         throw new Error("Chat não encontrado");
       }
 
-      // Adicionar a pergunta e resposta ao histórico do chat
       const { marked } = await import('marked');
-      response.answer = marked(response.answer);
-      chat.history.push({
-        question: userQuery,
-        answer: response.answer || "Resposta não encontrada",
-      });
+      const formattedAnswer = marked(response.answer || "Resposta não encontrada");
 
-      // Atualiza a sessão com o chat modificado
-      req.session.chats = req.session.chats;
+      if (chat.needsInitialAnswer) {
+        // Se for a primeira pergunta, atualiza a resposta
+        chat.history[0].answer = formattedAnswer;
+        chat.needsInitialAnswer = false; // Remove a flag
+      } else {
+        // Para perguntas subsequentes, adiciona ao histórico
+        chat.history.push({
+          question: userQuery,
+          answer: formattedAnswer,
+        });
+      }
 
-      // Envia o JSON com a resposta para o frontend (sem renderizar página)
+      req.session.save(); // Garante que a sessão seja salva
+
       return res.json({
         sucesso: true,
         question: userQuery,
-        answer: response.answer || "Resposta não encontrada",
+        answer: formattedAnswer,
         chatId: chat.id,
       });
     } catch (error) {
