@@ -1,3 +1,6 @@
 node_modules
 uploads/
 dist/
+
+# IntelliJ IDEA folder
+.idea/
