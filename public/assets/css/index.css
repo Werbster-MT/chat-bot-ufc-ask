@@ -680,6 +680,10 @@ body {
   box-shadow: 0px 0px 6px var(--color-shadow);
 }
 
+.chat-bubble.bot-response > p {
+  margin-bottom: 0 !important;
+}
+
 .user-message {
   background-color: var(--color-primary);
   color: var(--color-white);

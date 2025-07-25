@@ -1,5 +1,6 @@
 const ApiService = require("../services/ApiService");
 
+
 class StudentHomeController {
   index(req, res) {
     const user = req.session.user;
@@ -84,6 +85,8 @@ class StudentHomeController {
       const chatName = new StudentHomeController().getChatName(userQuery);
 
       // Armazena o novo chat na sessão
+      const { marked } = await import('marked');
+      response.answer = marked(response.answer);
       const newChat = {
         id: chatId,
         name: chatName,
@@ -163,6 +166,8 @@ class StudentHomeController {
       }
 
       // Adicionar a pergunta e resposta ao histórico do chat
+      const { marked } = await import('marked');
+      response.answer = marked(response.answer);
       chat.history.push({
         question: userQuery,
         answer: response.answer || "Resposta não encontrada",
