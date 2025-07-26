@@ -679,6 +679,8 @@ body::after {
   height: 100%;
   padding: 0;
   gap: 0;
+  justify-content: space-between;
+  padding-bottom: 2rem;
 }
 
 .conversation-box {
