@@ -60,6 +60,12 @@
 /* ========================================
    RESET E CONFIGURAÇÕES GLOBAIS
    ======================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   height: 100%;
   background-color: var(--color-background);
@@ -129,6 +135,15 @@ body::after {
   overflow: visible;
   max-width: 100%;
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.user-perfil-container > .d-flex.justify-content-center {
+  flex-grow: 1;
+  align-items: center;
 }
 
 
@@ -374,6 +389,10 @@ body::after {
   box-sizing: border-box;
 }
 
+.perfil-title > .position-absolute {
+  top: -25px !important;
+}
+
 /* Estilo do círculo onde o ícone ficará */
 .circle {
   background-color: var(--color-primary);  /* Cor do círculo */
@@ -404,6 +423,8 @@ body::after {
   border-radius: 8px 8px;
   padding: 20px;
   width: 500px;
+  margin: 0 auto;
+  height: 450px;
 }
 
 /* Ajuste na div do ícone para que ela acompanhe o tamanho do ícone */
@@ -441,6 +462,11 @@ body::after {
   align-items: center;
   width: 60%;
   margin: 0 auto;
+  margin-top: 2rem;
+}
+
+.rename-user label {
+  margin-bottom: 10px;
 }
 
 /* Estilo do input */
@@ -554,7 +580,6 @@ body::after {
    ======================================== */
 .content {
   margin-left: 280px;
-  /* espaço da sidebar */
   padding: 32px;
   flex: 1;
   min-height: 100vh;
@@ -649,22 +674,21 @@ body::after {
    ======================================== */
 /* ChatBox */
 .content.main-chatbox {
-  min-height: 100vh;
-  height: auto;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  gap: 0;
 }
 
 .conversation-box {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 32px;
-  flex: 1;
-  overflow-y: auto;
-  position: relative;
-  overflow: visible;
-  max-width: 100%;
-  width: 100%;
+  padding: 1.5rem 1.5rem 0 1.5rem;
 }
 
 .chat-label {
@@ -676,7 +700,7 @@ body::after {
   padding: 12px;
   border-radius: 12px;
   font-size: 15px;
-  line-height: 1;
+  line-height: 1.6;
   word-wrap: break-word;
   background-color: var(--color-input-bg);
   box-shadow: 0px 0px 6px var(--color-shadow);
@@ -700,6 +724,11 @@ body::after {
   border-bottom-left-radius: 0;
 }
 
+form#chatForm {
+  flex-shrink: 0;
+  padding: 2rem 1.5rem;
+}
+
 /* ========================================
    FORMULÁRIOS DE UPLOAD
    ======================================== */
@@ -709,28 +738,44 @@ body::after {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px var(--color-shadow-medium);
+  margin-bottom: 2rem;
 }
 
 .form-upload label {
   color: var(--color-white);
 }
 
+/* Mantém os inputs ocupando a largura total */
 .form-upload .form-control {
   background-color: var(--color-background);
   color: var(--color-input-placeholder);
   border: 1px solid var(--color-input-border);
   border-radius: 8px;
+  width: 100%;
 }
 
+/* Contêiner para centralizar o botão */
+.form-upload .btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Botão com largura aumentada */
 .form-upload button {
   background-color: var(--color-primary);
   border: none;
   color: white;
   border-radius: 5px;
+  width: 250px;
 }
 
 .form-upload button:hover {
   background-color: var(--color-primary-hover);
+}
+
+.form-upload .form-control {
+  margin-top: 10px;
 }
 
 #documentLink::placeholder {
@@ -1012,6 +1057,11 @@ table.dataTable .dataTables_paginate {
   border-color: var(--color-info) !important;
 }
 
+body.swal2-shown .swal2-container {
+  left: 280px; /* Largura da sidebar */
+  width: calc(100% - 280px); /* Preenche o resto da tela */
+}
+
 /* ========================================
    ESTILOS PARA TOASTS
    ======================================== */
@@ -1077,4 +1127,62 @@ body.app-page::after {
      Calculamos 50% da tela e adicionamos 140px para re-centralizar no conteúdo. */
   background-position: calc(50% + 140px) center;
   background-size: 25%; /* Reduz um pouco o tamanho para se ajustar melhor ao espaço */
+}
+
+/* ========================================
+   SCROLLBAR PERSONALIZADA
+   ======================================== */
+.conversation-box::-webkit-scrollbar {
+  width: 13px;
+}
+
+.conversation-box::-webkit-scrollbar-track {
+  background: var(--color-sidebar-bg);
+  border-radius: 10px;
+}
+
+.conversation-box::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  border: 3px solid var(--color-sidebar-bg);
+}
+
+.conversation-box::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* ========================================
+   CONTROLE DE SCROLL HÍBRIDO
+   ======================================== */
+
+/* Esta classe, quando aplicada ao BODY, desativa a rolagem do navegador */
+body.no-browser-scroll {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Quando a rolagem do navegador está desativada, força o .content a ter a altura da tela */
+body.no-browser-scroll .content {
+  height: 100vh;
+}
+
+/* ========================================
+   ANIMAÇÃO DE TRANSIÇÃO DE PÁGINA
+   ======================================== */
+
+/* Define a animação de fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplica a animação ao contêiner de conteúdo principal */
+.content {
+  animation: fadeIn 0.4s ease-out;
 }

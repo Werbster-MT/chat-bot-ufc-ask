@@ -1,13 +1,11 @@
 <%- include('components/header') %>
 
-  <body class="app-page">
+  <body class="app-page no-browser-scroll">
     <aside class="sidebar-container">
       <%- include('components/sideBar.ejs') %>
     </aside>
 
-    <main
-      class="content main-chatbox p-4 d-flex flex-column justify-content-between"
-    >
+    <main class="content main-chatbox">
       <div class="conversation-box">
         <% chat.history.forEach(message => { %>
         <div class="chat-box-user-wrap d-flex flex-column align-items-end">
@@ -31,7 +29,7 @@
       <form
         action="/ask"
         method="POST"
-        class="d-flex justify-content-center align-items-center p-0 mt-4"
+        class="d-flex justify-content-center align-items-center mt-4"
         id="chatForm"
         return="sendQuestion()"
       >
@@ -55,136 +53,137 @@
   </body>
 
   <script>
-    // SCRIPT PARA BUSCAR A RESPOSTA INICIAL
-    document.addEventListener("DOMContentLoaded", function () {
-      <% if (chat.needsInitialAnswer) { %>
-        const firstQuestion = "<%= chat.history[0].question.replace(/"/g, '\\"') %>";
-        const chatId = "<%= chat.id %>";
-        const iaBubble = document.querySelector(".bot-response");
+      // SCRIPT PARA BUSCAR A RESPOSTA INICIAL
+      document.addEventListener("DOMContentLoaded", function () {
+        scrollChatToBottom(); // Rola para o final ao carregar a página
 
-        if (iaBubble && iaBubble.innerText.trim() === "...") {
-          iaBubble.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-
-          fetch("/ask", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userQuery: firstQuestion, chat_id: chatId }),
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.sucesso) {
-              iaBubble.innerHTML = data.answer;
-            } else {
-              iaBubble.innerHTML = "Desculpe, ocorreu um erro ao buscar a resposta.";
-            }
-          })
-          .catch(error => {
-            console.error("Erro ao buscar resposta inicial:", error);
-            iaBubble.innerHTML = "Desculpe, ocorreu um erro de comunicação.";
-          });
-        }
-      <% } %>
-    });
-
-    // Envio da pergunta e exibição da resposta sem recarregar a página
-    document
-      .getElementById("chatForm")
-      .addEventListener("submit", function (event) {
-        event.preventDefault();
-        const userQuery = document.getElementById("userQuery").value;
-        const chat_id = document.querySelector('[name="chat_id"]').value;
-
-        if (userQuery.trim()) {
-          // Desabilita o botão e mostra loading
-          const submitBtn = document.getElementById("submitBtn");
-          const originalContent = submitBtn.innerHTML;
-          submitBtn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-          submitBtn.disabled = true;
-          const chatBox = document.querySelector(".conversation-box");
-          const userMessage = document.createElement("div");
-          userMessage.classList.add(
-            "chat-box-user-wrap",
-            "d-flex",
-            "flex-column",
-            "align-items-end"
-          );
-          userMessage.innerHTML = `
-            <span class="chat-label mb-1">Você</span>
-            <div class="chat-bubble user-message">
-              <p class="mb-0">${userQuery}</p>
-            </div>
-          `;
-          chatBox.appendChild(userMessage);
-
-          // Adiciona o indicador de loading da IA
-          const loadingMessage = document.createElement("div");
-          loadingMessage.classList.add(
-            "chat-box-ia-wrap",
-            "d-flex",
-            "flex-column",
-            "align-items-start"
-          );
-          loadingMessage.innerHTML = `
-            <span class="chat-label mb-1">IA</span>
-            <div class="chat-bubble bot-response">
-              <div class="loading-dots"><span></span><span></span><span></span></div>
-            </div>
-          `;
-          chatBox.appendChild(loadingMessage);
-          window.scrollTo(0, document.body.scrollHeight);
-
-          // Limpa o input
-          document.getElementById("userQuery").value = "";
-          fetch("/ask", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userQuery, chat_id }), // Envia a pergunta e o chat_id
-          })
-            .then((response) => response.json())
-            .then((data) => {
+        <% if (chat.needsInitialAnswer) { %>
+          const firstQuestion = "<%= chat.history[0].question.replace(/"/g, '\\"') %>";
+          const chatId = "<%= chat.id %>";
+          const iaBubble = document.querySelector(".bot-response");
+          if (iaBubble && iaBubble.innerText.trim() === "...") {
+            iaBubble.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+            fetch("/ask", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ userQuery: firstQuestion, chat_id: chatId }),
+            })
+            .then(response => response.json())
+            .then(data => {
               if (data.sucesso) {
-                // Remove o loading e adiciona a resposta real
-                chatBox.removeChild(loadingMessage);
-
-
-                const iaMessage = document.createElement("div");
-                iaMessage.classList.add(
-                  "chat-box-ia-wrap",
-                  "d-flex",
-                  "flex-column",
-
-                  "align-items-start"
-                );
-                console.log(data.answer);
-                iaMessage.innerHTML = `
-                  <span class="chat-label mb-1">IA</span>
-
-                  <div class="chat-bubble bot-response">
-                    <p class="mb-0">${data.answer}</p>
-                  </div>
-                `;
-                chatBox.appendChild(iaMessage);
+                iaBubble.innerHTML = data.answer;
               } else {
-                // Remove o loading e mostra erro
-                chatBox.removeChild(loadingMessage);
-                console.error("Erro ao enviar a pergunta:", data.mensagem);
+                iaBubble.innerHTML = "Desculpe, ocorreu um erro ao buscar a resposta.";
               }
             })
-            .catch((error) => {
-              // Remove o loading e mostra erro
-              chatBox.removeChild(loadingMessage);
-              console.error("Erro:", error);
-            })
-
-             .finally(() => {
-              // Restaura o botão
-              submitBtn.innerHTML = originalContent;
-              submitBtn.disabled = false;
+            .catch(error => {
+              console.error("Erro ao buscar resposta inicial:", error);
+              iaBubble.innerHTML = "Desculpe, ocorreu um erro de comunicação.";
             });
-        }
+          }
+        <% } %>
       });
-  </script>
 
-<%- include('components/footer') %>
+      // Função para rolar a caixa de conversa para o final
+      function scrollChatToBottom() {
+        const chatBox = document.querySelector(".conversation-box");
+        if (chatBox) {
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+      }
+
+      // Envio da pergunta e exibição da resposta sem recarregar a página
+      document
+        .getElementById("chatForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const userQuery = document.getElementById("userQuery").value;
+          const chat_id = document.querySelector('[name="chat_id"]').value;
+
+          if (userQuery.trim()) {
+            const submitBtn = document.getElementById("submitBtn");
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+            submitBtn.disabled = true;
+            const chatBox = document.querySelector(".conversation-box");
+            const userMessage = document.createElement("div");
+            userMessage.classList.add(
+              "chat-box-user-wrap",
+              "d-flex",
+              "flex-column",
+              "align-items-end"
+            );
+            userMessage.innerHTML = `
+              <span class="chat-label mb-1">Você</span>
+              <div class="chat-bubble user-message">
+                <p class="mb-0">${userQuery}</p>
+              </div>
+             `;
+            chatBox.appendChild(userMessage);
+
+            const loadingMessage = document.createElement("div");
+            loadingMessage.classList.add(
+              "chat-box-ia-wrap",
+              "d-flex",
+              "flex-column",
+              "align-items-start"
+            );
+            loadingMessage.innerHTML = `
+              <span class="chat-label mb-1">IA</span>
+              <div class="chat-bubble bot-response">
+                <div class="loading-dots"><span></span><span></span><span></span></div>
+              </div>
+            `;
+            chatBox.appendChild(loadingMessage);
+
+            scrollChatToBottom(); // Rola para o final
+
+            document.getElementById("userQuery").value = "";
+            fetch("/ask", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ userQuery, chat_id }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                chatBox.removeChild(loadingMessage);
+                if (data.sucesso) {
+                  const iaMessage = document.createElement("div");
+                  iaMessage.classList.add(
+                    "chat-box-ia-wrap",
+                    "d-flex",
+                    "flex-column",
+                    "align-items-start"
+                  );
+                  console.log(data.answer);
+                  iaMessage.innerHTML = `
+                    <span class="chat-label mb-1">IA</span>
+                    <div class="chat-bubble bot-response">
+                      <p class="mb-0">${data.answer}</p>
+                     </div>
+                  `;
+                  chatBox.appendChild(iaMessage);
+                } else {
+                  // Remove o loading e mostra erro
+                  console.error("Erro ao enviar a pergunta:", data.mensagem);
+                }
+                scrollChatToBottom(); // Rola para o final
+              })
+              .catch((error) => {
+                // Remove o loading e mostra erro
+                chatBox.removeChild(loadingMessage);
+                console.error("Erro:", error);
+                scrollChatToBottom(); // Rola para o final
+              })
+              .finally(() => {
+                // Restaura o botão
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+              });
+          }
+        });
+    </script>
+
+  <%- include('components/footer') %>
