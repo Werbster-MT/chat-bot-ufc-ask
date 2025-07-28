@@ -125,7 +125,9 @@ body::after {
 /* ========================================
    PÁGINA DE LOGIN
    ======================================== */
-/* As regras .main-login::before e .content::before foram removidas */
+.main-login {
+  animation: fadeIn 0.4s ease-out;
+}
 
 /* ========================================
    CONTAINERS PRINCIPAIS
