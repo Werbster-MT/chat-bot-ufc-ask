@@ -64,29 +64,16 @@
         <table id="example" class="table table-striped table-dark">
           <thead>
             <tr>
-              <th>Ações</th>
               <th>Nome</th>
               <th>Tipo</th>
               <th>Data de Inserção</th>
               <th>Usuário</th>
-            </tr>
+              <th class="text-center">Ações</th> </tr>
           </thead>
           <tbody>
             <% if (sources && sources.length > 0) { %>
               <% sources.forEach(source => { %>
                 <tr>
-                  <td class="text-center">
-                    <button 
-                      type="button" 
-                      class="btn btn delete-document" 
-                      title="excluir documento"
-                      data-source="<%= source.source || source.name %>"
-                      data-nome="<%= source.source || 'Documento' %>"
-                      onclick="confirmarExclusao(this.dataset.source, this.dataset.nome)"
-                    >
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
                   <td><%= source.source || 'Documento' %></td>
                   <td><%= source.tipo || 'Documento' %></td>
                   <td>
@@ -101,6 +88,17 @@
                     <% } %>
                   </td>
                   <td><%= source.user || userName %></td>
+                  <td class="text-center"> <button
+                      type="button"
+                      class="btn btn delete-document"
+                      title="excluir documento"
+                      data-source="<%= source.source || source.name %>"
+                      data-nome="<%= source.source || 'Documento' %>"
+                      onclick="confirmarExclusao(this.dataset.source, this.dataset.nome)"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
               <% }); %>
             <% } %>
@@ -116,11 +114,14 @@
 
       $(document).ready(function () {
         $("#example").DataTable({
-          order: [[3, "desc"]],
+          order: [[2, "desc"]],
           pageLength: 5, // Número de itens por página
           language: {
             url: "/assets/js/datatables/Portuguese.json", // Caminho local para o arquivo
           },
+          columnDefs: [
+            { "orderable": false, "targets": 4 }
+          ]
         });
       });
 

@@ -845,6 +845,18 @@ table.dataTable .dataTables_paginate {
   color: var(--color-white);
 }
 
+/* Adiciona uma linha vertical para dividir as colunas */
+table.dataTable th,
+table.dataTable td {
+  border-right: 1px solid var(--color-table-row-hover);
+}
+
+/* Remove a borda da última coluna para não sobrar uma linha no final */
+table.dataTable th:last-child,
+table.dataTable td:last-child {
+  border-right: none;
+}
+
 
 /* Estilizando o campo de busca */
 .dataTables_length, .dataTables_filter {
