@@ -60,75 +60,94 @@
 /* ========================================
    RESET E CONFIGURAÇÕES GLOBAIS
    ======================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  background-color: var(--color-background);
+}
+
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
   color: var(--color-foreground);
+  min-height: 100%;
   border: 1px solid var(--color-border);
   overflow-x: hidden;
-  /* background-image: url("../imgs/gradient_brackgound_login.png"); */
-  background: var(--color-sidebar-bg) !important;
+  position: relative;
+  z-index: 0;
+  background-color: transparent; /* Importante para ver o fundo do html */
+}
+
+/* Pseudo-elemento para o gradiente de fundo FIXO */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Garante a largura total da tela */
+  height: 100vh; /* Garante a altura total da tela */
+  background-image: url("../imgs/gradient_brackgound_login.png");
   background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: cover;
+  background-position: bottom right; /* Ancora a imagem no canto inferior direito */
+  background-size: cover; /* Faz a imagem cobrir todo o espaço do pseudo-elemento */
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Pseudo-elemento para a logo de fundo FIXA */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../imgs/logo_ufc.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30%;
+  opacity: 0.06;
+  filter: brightness(0) invert(1);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* ========================================
    PÁGINA DE LOGIN
    ======================================== */
-.main-login::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("../imgs/logo_ufc.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 25%;
-  opacity: 0.06;
-  filter: brightness(0) invert(1); /* Torna a logo branca */
-  z-index: -1;
-  pointer-events: none;
+.main-login {
+  animation: fadeIn 0.4s ease-out;
 }
 
 /* ========================================
-   CONTAINERS PRINCIPAIS E LOGO DE FUNDO
+   CONTAINERS PRINCIPAIS
    ======================================== */
 .new-ask-container, .dashboard-container, .user-perfil-container {
-  /* Container para o conteúdo principal */
   position: relative;
   overflow: visible;
   max-width: 100%;
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.content::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  /* background-image: url("../imgs/logo_ufc.png"); */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 30%;
-  opacity: 0.06;
-  filter: brightness(0) invert(1); /* Torna a logo branca */
-  z-index: -1;
-  pointer-events: none;
+.user-perfil-container > .d-flex.justify-content-center {
+  flex-grow: 1;
+  align-items: center;
 }
+
 
 /* ========================================
    COMPONENTES DE FORMULÁRIO
@@ -372,6 +391,10 @@ body {
   box-sizing: border-box;
 }
 
+.perfil-title > .position-absolute {
+  top: -25px !important;
+}
+
 /* Estilo do círculo onde o ícone ficará */
 .circle {
   background-color: var(--color-primary);  /* Cor do círculo */
@@ -400,8 +423,10 @@ body {
 .perfil-box {
   background-color: var(--color-box-bg);
   border-radius: 8px 8px;
-  padding: 20px; 
+  padding: 20px;
   width: 500px;
+  margin: 0 auto;
+  height: 450px;
 }
 
 /* Ajuste na div do ícone para que ela acompanhe o tamanho do ícone */
@@ -430,7 +455,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
-} 
+}
 
 /* Card do Perfil */
 .rename-user {
@@ -438,7 +463,12 @@ body {
   justify-content: center;
   align-items: center;
   width: 60%;
-  margin: 0 auto; 
+  margin: 0 auto;
+  margin-top: 2rem;
+}
+
+.rename-user label {
+  margin-bottom: 10px;
 }
 
 /* Estilo do input */
@@ -448,20 +478,20 @@ body {
   background-color: var(--color-input-bg);
   border: 1px solid var(--color-input-border);
   color: var(--color-white);
-  border-radius: 8px 0 0 8px; 
+  border-radius: 8px 0 0 8px;
   font-size: 14px;
 }
 
 .rename-user .form-control::placeholder {
   color: var(--color-input-placeholder)
-} 
+}
 
 /* Estilo do botão */
 .rename-user button {
   padding: 10px 24px;
   background-color: var(--color-primary);
   border: none;
-  border-radius: 0 8px 8px 0; 
+  border-radius: 0 8px 8px 0;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -476,16 +506,16 @@ body {
 
 .delete-account, .delete-document {
   color: var(--color-white);  /* Deixa o ícone da lixeira vermelho */
-  border: none;  
-  background: none;  
-  border-radius: 50%;  
-  transition: color 0.3s ease, transform 0.2s ease;  
+  border: none;
+  background: none;
+  border-radius: 50%;
+  transition: color 0.3s ease, transform 0.2s ease;
   padding: 0 !important;
 }
 
 .delete-account:hover, .delete-document:hover {
   color: var(--color-danger);
-  transform: scale(1.1);  
+  transform: scale(1.1);
 }
 
 /* Estilo do ícone de anexo */
@@ -552,7 +582,6 @@ body {
    ======================================== */
 .content {
   margin-left: 280px;
-  /* espaço da sidebar */
   padding: 32px;
   flex: 1;
   min-height: 100vh;
@@ -647,22 +676,23 @@ body {
    ======================================== */
 /* ChatBox */
 .content.main-chatbox {
-  min-height: 100vh;
-  height: auto;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  gap: 0;
+  justify-content: space-between;
+  padding-bottom: 2rem;
 }
 
 .conversation-box {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 32px;
-  flex: 1;
-  overflow-y: auto;
-  position: relative;
-  overflow: visible;
-  max-width: 100%;
-  width: 100%;
+  padding: 1.5rem 1.5rem 0 1.5rem;
 }
 
 .chat-label {
@@ -674,7 +704,7 @@ body {
   padding: 12px;
   border-radius: 12px;
   font-size: 15px;
-  line-height: 1;
+  line-height: 1.6;
   word-wrap: break-word;
   background-color: var(--color-input-bg);
   box-shadow: 0px 0px 6px var(--color-shadow);
@@ -698,6 +728,11 @@ body {
   border-bottom-left-radius: 0;
 }
 
+form#chatForm {
+  flex-shrink: 0;
+  padding: 2rem 1.5rem;
+}
+
 /* ========================================
    FORMULÁRIOS DE UPLOAD
    ======================================== */
@@ -707,28 +742,44 @@ body {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px var(--color-shadow-medium);
+  margin-bottom: 2rem;
 }
 
 .form-upload label {
   color: var(--color-white);
 }
 
+/* Mantém os inputs ocupando a largura total */
 .form-upload .form-control {
   background-color: var(--color-background);
   color: var(--color-input-placeholder);
   border: 1px solid var(--color-input-border);
   border-radius: 8px;
+  width: 100%;
 }
 
+/* Contêiner para centralizar o botão */
+.form-upload .btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Botão com largura aumentada */
 .form-upload button {
   background-color: var(--color-primary);
   border: none;
   color: white;
   border-radius: 5px;
+  width: 250px;
 }
 
 .form-upload button:hover {
   background-color: var(--color-primary-hover);
+}
+
+.form-upload .form-control {
+  margin-top: 10px;
 }
 
 #documentLink::placeholder {
@@ -796,6 +847,18 @@ table.dataTable .dataTables_paginate {
   color: var(--color-white);
 }
 
+/* Adiciona uma linha vertical para dividir as colunas */
+table.dataTable th,
+table.dataTable td {
+  border-right: 1px solid var(--color-table-row-hover);
+}
+
+/* Remove a borda da última coluna para não sobrar uma linha no final */
+table.dataTable th:last-child,
+table.dataTable td:last-child {
+  border-right: none;
+}
+
 
 /* Estilizando o campo de busca */
 .dataTables_length, .dataTables_filter {
@@ -822,7 +885,7 @@ table.dataTable .dataTables_paginate {
 
 /* Estilizando o select de resultados por página */
 .dataTables_length select {
-  color: var(--color-white); 
+  color: var(--color-white);
   background-color: var(--color-input-bg) !important;
   border: none !important;
   outline: none !important;
@@ -848,23 +911,6 @@ table.dataTable .dataTables_paginate {
   z-index: 1000;
   padding: 20px;
   pointer-events: none; /* Permite clicar através do header */
-}
-
-.img-logo {
-  position: fixed;
-  top: -10px;
-  right: -10px;
-  z-index: 1000;
-  padding: 20px;
-  pointer-events: none; /* Permite clicar através do header */
-}
-
-.img-logo img {
-  width: 40px;
-  height: auto;
-  opacity: 0.8;
-  filter: brightness(0) invert(1); /* Torna a logo branca */
-  transition: opacity 0.3s ease;
 }
 
 /* Página Home */
@@ -1027,6 +1073,11 @@ table.dataTable .dataTables_paginate {
   border-color: var(--color-info) !important;
 }
 
+body.swal2-shown .swal2-container {
+  left: 280px; /* Largura da sidebar */
+  width: calc(100% - 280px); /* Preenche o resto da tela */
+}
+
 /* ========================================
    ESTILOS PARA TOASTS
    ======================================== */
@@ -1081,4 +1132,73 @@ table.dataTable .dataTables_paginate {
   color: #fff;
   text-shadow: 0 1px 2px #0008;
   letter-spacing: 0.5px;
+}
+
+/* ========================================
+   AJUSTE POSIÇÃO DA LOGO EM PÁGINAS INTERNAS
+   ======================================== */
+body.app-page::after {
+  /* A largura da sidebar é 280px.
+     Metade disso é 140px.
+     Calculamos 50% da tela e adicionamos 140px para re-centralizar no conteúdo. */
+  background-position: calc(50% + 140px) center;
+  background-size: 25%; /* Reduz um pouco o tamanho para se ajustar melhor ao espaço */
+}
+
+/* ========================================
+   SCROLLBAR PERSONALIZADA
+   ======================================== */
+.conversation-box::-webkit-scrollbar {
+  width: 13px;
+}
+
+.conversation-box::-webkit-scrollbar-track {
+  background: var(--color-sidebar-bg);
+  border-radius: 10px;
+}
+
+.conversation-box::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  border: 3px solid var(--color-sidebar-bg);
+}
+
+.conversation-box::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* ========================================
+   CONTROLE DE SCROLL HÍBRIDO
+   ======================================== */
+
+/* Esta classe, quando aplicada ao BODY, desativa a rolagem do navegador */
+body.no-browser-scroll {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Quando a rolagem do navegador está desativada, força o .content a ter a altura da tela */
+body.no-browser-scroll .content {
+  height: 100vh;
+}
+
+/* ========================================
+   ANIMAÇÃO DE TRANSIÇÃO DE PÁGINA
+   ======================================== */
+
+/* Define a animação de fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplica a animação ao contêiner de conteúdo principal */
+.content {
+  animation: fadeIn 0.4s ease-out;
 }
